@@ -1,3 +1,25 @@
+import 'package:factura_sys/screens/Angajati/concedii.dart';
+import 'package:factura_sys/screens/Angajati/contracteAngajati.dart';
+import 'package:factura_sys/screens/Facturi/adaugaFacturi.dart';
+import 'package:factura_sys/screens/Facturi/articoleFacturi.dart';
+import 'package:factura_sys/screens/Facturi/cautaFacturi.dart';
+import 'package:factura_sys/screens/Parc_Auto/consumCarburant.dart';
+import 'package:factura_sys/screens/Parc_Auto/gestiuneMasini.dart';
+import 'package:factura_sys/screens/Parc_Auto/intrariService.dart';
+import 'package:factura_sys/screens/Parc_Auto/polite.dart';
+import 'package:factura_sys/screens/Relatii%20Comerciale/entitati.dart';
+import 'package:factura_sys/screens/Relatii%20Comerciale/ibanUri.dart';
+import 'package:factura_sys/screens/Relatii%20Comerciale/relatii.dart';
+import 'package:factura_sys/screens/Setari%20Gestiune/categorii.dart';
+import 'package:factura_sys/screens/Setari%20Gestiune/detaliiExtra.dart';
+import 'package:factura_sys/screens/Setari%20Gestiune/firmeGestiune.dart';
+import 'package:factura_sys/screens/Setari%20Gestiune/statusuri.dart';
+import 'package:factura_sys/screens/Setari%20Gestiune/taguri.dart';
+import 'package:factura_sys/screens/Setari%20Gestiune/taxe.dart';
+import 'package:factura_sys/screens/Tranzactii/adaugaTranzactii.dart';
+import 'package:factura_sys/screens/Tranzactii/asigneazaFacturi.dart';
+import 'package:factura_sys/screens/Tranzactii/cautaTranzactii.dart';
+import 'package:factura_sys/screens/addNewInvoiceScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -20,39 +42,10 @@ class _homeScreenState extends State<homeScreen> {
   void initState() {
     super.initState();
 
-    tabs.add(TabData(
-      text: 'Tab 1',
-      leading: (context, status) => Icon(Icons.star, size: 16),
-      content: Padding(
-        padding: EdgeInsets.all(8),
-        child: Text('Hello'),
-      ),
-    ));
-
-    tabs.add(TabData(
-      text: 'Tab 2',
-      content: Padding(
-        padding: EdgeInsets.all(8),
-        child: Text('Hello again'),
-      ),
-    ));
-
-    tabs.add(TabData(
-      text: 'TextField',
-      content: Padding(
-        padding: EdgeInsets.all(8),
-        child: TextField(
-          decoration: InputDecoration(
-            isDense: true,
-            border: OutlineInputBorder(),
-          ),
-        ),
-      ),
-      keepAlive: true,
-    ));
 
     _controller = TabbedViewController(tabs);
   }
+
 
   void openTab(String tabTitle, Widget tabContent) {
     // Check if the tab is already open
@@ -66,31 +59,71 @@ class _homeScreenState extends State<homeScreen> {
 
     if (existingIndex != null) {
       // Navigate to the existing tab
-      _controller.selectedIndex = existingIndex;
+      // Ensure the index is valid before accessing
+      if (existingIndex >= 0 && existingIndex < tabs.length) {
+        _controller.selectedIndex = existingIndex;
+      }
     } else {
       // Add a new tab and navigate to it
       tabs.add(TabData(
+        draggable: false,
         text: tabTitle,
-        leading: (context, status) => Icon(Icons.star, size: 16),
         content: Padding(
           padding: EdgeInsets.all(8),
           child: tabContent,
         ),
       ));
-      _controller.selectedIndex = tabs.length - 1;
+
+      // Ensure we are setting the index to the last tab
+      if (tabs.isNotEmpty) {
+        _controller.selectedIndex = tabs.length - 1;
+      }
     }
 
+    // Update the state to reflect changes
     setState(() {});
   }
 
+
+  // void openTab(String tabTitle, Widget tabContent) {
+  //   // Check if the tab is already open
+  //   int? existingIndex;
+  //   for (int i = 0; i < tabs.length; i++) {
+  //     if (tabs[i].text == tabTitle) {
+  //       existingIndex = i;
+  //       break;
+  //     }
+  //   }
+  //
+  //   if (existingIndex != null) {
+  //     // Navigate to the existing tab
+  //     _controller.selectedIndex = existingIndex;
+  //   } else {
+  //     // Add a new tab and navigate to it
+  //     tabs.add(TabData(
+  //       text: tabTitle,
+  //     //  leading: (context, status) => Icon(Icons.star, size: 16),
+  //       content: Padding(
+  //         padding: EdgeInsets.all(8),
+  //         child: tabContent,
+  //       ),
+  //     ));
+  //     _controller.selectedIndex = tabs.length - 1;
+  //   }
+  //
+  //   setState(() {});
+  // }
+
   @override
   Widget build(BuildContext context) {
-    TabbedView tabbedView = TabbedView(
+    /// test
+    // openTab("tabTitle", entitati());
 
+    TabbedView tabbedView = TabbedView(
       controller: _controller,
       closeButtonTooltip: "Close tab",
     );
-    Widget w = TabbedViewTheme(
+    Widget TabsWidgetDisplay = TabbedViewTheme(
       child: tabbedView,
       data: TabbedViewThemeData.minimalist(),
     );
@@ -100,7 +133,6 @@ class _homeScreenState extends State<homeScreen> {
 
       sideBar: SideBar(
         scrollController:ScrollController() ,
-
         items: const [
           AdminMenuItem(
             title: 'Dashboard',
@@ -267,19 +299,77 @@ class _homeScreenState extends State<homeScreen> {
         selectedRoute: '/',
         onSelected: (item) {
 
-          if (item.title == 'Firme Gestiune') {
-            openTab('Third Level Item 1', Text('Content for Third Level Item 1'));
-          } else if (item.title == 'Third Level Item 2') {
-            openTab('Third Level Item 2', Text('Content for Third Level Item 11'));
-          } else if (item.title == 'Second Level Item 1') {
-            openTab('Second Level Item 1', Text('Content for Third Level Item 111'));
-          } else if (item.title == 'Second Level Item 2') {
-            openTab('Second Level Item 2', Text('Content for Third Level Item 111'));
-          }else if (item.title == 'Second Level Item 2') {
-            openTab('1st Level Item1', Text('Content for Third Level Item 11111'));
-          }else if (item.title == 'Categorii') {
-            openTab('Categorii', Container(width: 500, height: 800, color: Colors.green, child: Text('Content for Third Level Item 111111'),));
+          switch (item.title) {
+            case 'Adauga Facturi':
+              openTab('Adauga Facturi', adaugaFacturi());
+              break;
+            case 'Articole Facturi':
+              openTab('Articole Facturi', articoleFacturi());
+              break;
+            case 'Cauta Facturi':
+              openTab('Cauta Facturi', cautaFacturi());
+              break;
+            case 'Adauga Tranzactii':
+              openTab('Adauga Tranzactii', adaugaTranzactii());
+              break;
+            case 'Asigneaza Facturi':
+              openTab('Asigneaza Facturi', Text('Content for Asigneaza Facturi'));
+              break;
+            case 'Cauta Tranzactii':
+              openTab('Cauta Tranzactii', cautaTranzactii());
+              break;
+            case 'Entitati':
+              openTab('Entitati', entitati());
+              break;
+            case 'Relatii':
+              openTab('Relatii', relatii());
+              break;
+            case 'IBAN-uri':
+              openTab('IBAN-uri',ibanUri());
+              break;
+            case 'Concedii':
+              openTab('Concedii',concedii());
+              break;
+            case 'Contracte Angajati':
+              openTab('Contracte Angajati', contracteAngajati());
+              break;
+            case 'Gestiune Masini':
+              openTab('Gestiune Masini',gestiuneMasini());
+              break;
+            case 'Polite':
+              openTab('Polite', polite());
+              break;
+            case 'Consum Carburant':
+              openTab('Consum Carburant', consumCarburant());
+              break;
+            case 'Intrari Service':
+              openTab('Intrari Service', intrariService());
+              break;
+            case 'Statusuri':
+              openTab('Statusuri',statusuri());
+              break;
+            case 'Taxe':
+              openTab('Taxe', taxe());
+              break;
+            case 'Taguri':
+              openTab('Taguri', taguri());
+              break;
+            case 'Categorii':
+              openTab('Categorii', categorii());
+              break;
+            case 'Detalii Extra':
+              openTab('Detalii Extra',detaliiExtra());
+              break;
+            case 'Firme Gestiune':
+              openTab('Firme Gestiune', firmeGestiune());
+              break;
+            default:
+            // Handle cases where the item title doesn't match any expected values
+              openTab('Unknown', Text('No content available for this item.'));
+              break;
           }
+
+
         },
         header: Container(
           height: 50,
@@ -307,11 +397,11 @@ class _homeScreenState extends State<homeScreen> {
       body: SingleChildScrollView(
         child: Container(
           alignment: Alignment.topLeft,
-          padding: const EdgeInsets.all(10),
+         // padding: const EdgeInsets.all(5),
           child: Container(
-            width: MediaQuery.of(context).size.width * .8,
-            height: MediaQuery.of(context).size.height,
-            child: w,
+            width: MediaQuery.of(context).size.width ,
+            height: MediaQuery.of(context).size.height * .95 ,
+            child: TabsWidgetDisplay,
           ),
         ),
       ),
@@ -320,186 +410,3 @@ class _homeScreenState extends State<homeScreen> {
 }
 
 
-
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter/rendering.dart';
-// import 'package:flutter_admin_scaffold/admin_scaffold.dart';
-// import 'package:tabbed_view/tabbed_view.dart';
-//
-// class homeScreen extends StatefulWidget {
-//   const homeScreen({super.key});
-//
-//   @override
-//   State<homeScreen> createState() => _homeScreenState();
-// }
-//
-// class _homeScreenState extends State<homeScreen> {
-//   Container currentScreen = Container(
-//     decoration: BoxDecoration(border: Border.all(color: Colors.black)),
-//   );
-//
-//   late TabbedViewController _controller;
-//   List<TabData> tabs = [];
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//
-//
-//     tabs.add(TabData(
-//
-//         text: 'Tab 1',
-//         leading: (context, status) => Icon(Icons.star, size: 16),
-//         content: Padding(child: Text('Hello'), padding: EdgeInsets.all(8))));
-//     tabs.add(TabData(
-//         text: 'Tab 2',
-//         content:
-//             Padding(child: Text('Hello again'), padding: EdgeInsets.all(8))));
-//     tabs.add(TabData(
-//
-//         text: 'TextField',
-//         content: Padding(
-//             child: TextField(
-//                 decoration: InputDecoration(
-//                     isDense: true, border: OutlineInputBorder())),
-//             padding: EdgeInsets.all(8)),
-//         keepAlive: true));
-//
-//     _controller = TabbedViewController(tabs);
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     TabbedView tabbedView = TabbedView(controller: _controller,closeButtonTooltip: "Close tap",);
-//     Widget w =
-//         TabbedViewTheme(child: tabbedView, data: TabbedViewThemeData.minimalist());
-//
-//     return AdminScaffold(
-//       backgroundColor: Colors.white,
-//       appBar: AppBar(
-//         title: const Text('Sample'),
-//       ),
-//       sideBar: SideBar(
-//         items: const [
-//           AdminMenuItem(
-//             children: [
-//               AdminMenuItem(
-//                 title: 'Second Level Item 1',
-//                 route: '/screen2',
-//               ),
-//               AdminMenuItem(
-//                 title: 'xxx',
-//                 children: [AdminMenuItem(
-//                   title: 'Second Level Item 1',
-//                   route: '/screen2',
-//                 ),]
-//               ),
-//             ],
-//             title: 'Dashboard',
-//             route: '/screen2',
-//             icon: Icons.dashboard,
-//           ),
-//           AdminMenuItem(
-//             title: 'Top Level',
-//             icon: Icons.file_copy,
-//             children: [
-//               AdminMenuItem(
-//                 title: 'Second Level Item 1',
-//                 route: '/screen2',
-//               ),
-//               AdminMenuItem(
-//                 title: 'Second Level Item 2',
-//                 route: '/secondLevelItem2',
-//               ),
-//               AdminMenuItem(
-//                 title: 'Third Level',
-//                 children: [
-//                   AdminMenuItem(
-//                     title: 'Third Level Item 1',
-//                     route: '/thirdLevelItem1',
-//                   ),
-//                   AdminMenuItem(
-//                     title: 'Third Level Item 2',
-//                   ),
-//                 ],
-//               ),
-//             ],
-//           ),
-//         ],
-//         selectedRoute: '/',
-//         onSelected: (item) {
-//
-//           if (item.title == 'Third Level Item 2') {
-//             tabs.add(TabData(
-//                 text: 'Tab 1',
-//                 leading: (context, status) => Icon(Icons.star, size: 16),
-//                 content: Padding(child: Text('Third Level Item 2'), padding: EdgeInsets.all(8))));
-//
-//           }
-//           if (item.title == 'Third Level Item 1') {
-//             tabs.add(TabData(
-//                 text: 'Tab 1',
-//                 leading: (context, status) => Icon(Icons.star, size: 16),
-//                 content: Padding(child: Text('Third Level Item 1'), padding: EdgeInsets.all(8))));
-//
-//           }
-//           if (item.title == 'Second Level Item 1') {
-//             tabs.add(TabData(
-//                 text: 'Tab 1',
-//                 leading: (context, status) => Icon(Icons.star, size: 16),
-//                 content: Padding(child: Text('Second Level Item 1'), padding: EdgeInsets.all(8))));
-//
-//           }
-//           if (item.title == 'Second Level Item 2') {
-//             tabs.add(TabData(
-//                 text: 'Tab 1',
-//                 leading: (context, status) => Icon(Icons.star, size: 16),
-//                 content: Padding(child: Text('Second Level Item 2'), padding: EdgeInsets.all(8))));
-//
-//           }
-//           setState(() {});
-//         },
-//         header: Container(
-//           height: 50,
-//           width: double.infinity,
-//           color: const Color(0xff444444),
-//           child: const Center(
-//             child: Text(
-//               'header',
-//               style: TextStyle(
-//                 color: Colors.white,
-//               ),
-//             ),
-//           ),
-//         ),
-//         footer: Container(
-//           height: 50,
-//           width: double.infinity,
-//           color: const Color(0xff444444),
-//           child: const Center(
-//             child: Text(
-//               'footer',
-//               style: TextStyle(
-//                 color: Colors.white,
-//               ),
-//             ),
-//           ),
-//         ),
-//       ),
-//       body: SingleChildScrollView(
-//         child: Container(
-//           alignment: Alignment.topLeft,
-//           padding: const EdgeInsets.all(10),
-//           child:  Container(
-//             width: MediaQuery.of(context).size.width * .8,
-//               height: MediaQuery.of(context).size.height ,
-//               child: w,),
-//         ),
-//       ),
-//     );
-//   }
-//
-//
-//
-// }
