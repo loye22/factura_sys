@@ -1,3 +1,5 @@
+import 'package:factura_sys/provider/entitatiProvider.dart';
+import 'package:factura_sys/provider/ibanProvider.dart';
 import 'package:factura_sys/screens/homeScreen.dart';
 import 'package:factura_sys/screens/loginScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,12 +20,14 @@ Future<void> main() async {
         storageBucket: "facturasys-47c5c.appspot.com",
         messagingSenderId: "495287896056",
         appId: "1:495287896056:web:9f4dcb2f8068bd07db780d",
-        measurementId: "G-BYCFY4257F"
-    ),
+        measurementId: "G-BYCFY4257F"),
   );
   await Firebase.initializeApp();
 
-  runApp(MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (context) => EntitatiProvider()),
+    ChangeNotifierProvider(create: (context) => ibanProvider())
+  ], child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -47,9 +52,7 @@ class MyApp extends StatelessWidget {
           }
         },
       ),
-      routes: {
-
-      },
+      routes: {},
     );
   }
 }

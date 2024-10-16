@@ -729,4 +729,6 @@ class staticVar {
   }
 
   static String urlAPI = "https://5bb9-81-196-26-12.ngrok-free.app/";
+
+
 }

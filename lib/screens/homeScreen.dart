@@ -85,39 +85,12 @@ class _homeScreenState extends State<homeScreen> {
   }
 
 
-  // void openTab(String tabTitle, Widget tabContent) {
-  //   // Check if the tab is already open
-  //   int? existingIndex;
-  //   for (int i = 0; i < tabs.length; i++) {
-  //     if (tabs[i].text == tabTitle) {
-  //       existingIndex = i;
-  //       break;
-  //     }
-  //   }
-  //
-  //   if (existingIndex != null) {
-  //     // Navigate to the existing tab
-  //     _controller.selectedIndex = existingIndex;
-  //   } else {
-  //     // Add a new tab and navigate to it
-  //     tabs.add(TabData(
-  //       text: tabTitle,
-  //     //  leading: (context, status) => Icon(Icons.star, size: 16),
-  //       content: Padding(
-  //         padding: EdgeInsets.all(8),
-  //         child: tabContent,
-  //       ),
-  //     ));
-  //     _controller.selectedIndex = tabs.length - 1;
-  //   }
-  //
-  //   setState(() {});
-  // }
+
 
   @override
   Widget build(BuildContext context) {
     /// test
-    // openTab("tabTitle", entitati());
+   //openTab("tabTitle", ibanUri());
 
     TabbedView tabbedView = TabbedView(
       controller: _controller,

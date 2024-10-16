@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:factura_sys/models/entitati_Model.dart';
+import 'package:factura_sys/provider/entitatiProvider.dart';
 import 'package:factura_sys/widgets/buttons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
@@ -19,26 +24,17 @@ class entitati extends StatefulWidget {
 
 class _entitatiState extends State<entitati> {
   final DataGridController _dataGridController = DataGridController();
-  late entitatiDataSource entitatiDataSources;
-  List<entitati_Model> entitatiListTodisplay = [];
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    entitiesFromFirrbase();
-
-    entitatiDataSources = entitatiDataSource(orders: entitatiListTodisplay);
-  }
 
   @override
   Widget build(BuildContext context) {
+    final entitatiProvider = Provider.of<EntitatiProvider>(context);
     return Scaffold(
       backgroundColor: Colors.transparent,
       floatingActionButton: FloatingActionButton(
         tooltip: 'Adaugă entitate',
         backgroundColor: Color(0xFF3776B6),
-        onPressed: () {
+        onPressed: () async {
+         /// await  uploadDataToFirebaseFromJSON("louie@aurorafoods.ro");
           showEntitatiDialog(context);
         },
         child: Icon(
@@ -52,14 +48,15 @@ class _entitatiState extends State<entitati> {
        // selectionMode: SelectionMode.multiple,
         allowSorting: true,
         allowFiltering: true,
-        columnWidthMode: ColumnWidthMode.none,
+       columnWidthMode: ColumnWidthMode.fill,
+
+       // columnWidthMode: ColumnWidthMode.,
         // Disable auto-resizing
 
-        source: entitatiDataSources,
+        source:entitatiProvider.hasData ? entitatiProvider.entitatiDataSources : entitatiDataSource(orders: []) ,//entitatiDataSources,
         columns: <GridColumn>[
           GridColumn(
             columnName: 'cuiEntitate',
-            width: staticVar.fullWidth(context) *.27, // Set a fixed width
             label: Container(
               alignment: Alignment.center,
               child: Text('CUI Entitate'),
@@ -67,7 +64,7 @@ class _entitatiState extends State<entitati> {
           ),
           GridColumn(
             columnName: 'tip',
-            width: 150, // Set a fixed width
+         ///   width: 150, // Set a fixed width
             label: Container(
               alignment: Alignment.centerRight,
               child: Text('Tip'),
@@ -75,7 +72,7 @@ class _entitatiState extends State<entitati> {
           ),
           GridColumn(
             columnName: 'Denumire',
-            width: 150, // Set a fixed width
+          //  width: 150, // Set a fixed width
             label: Container(
               alignment: Alignment.centerRight,
               child: Text('Denumire'),
@@ -83,7 +80,7 @@ class _entitatiState extends State<entitati> {
           ),
           GridColumn(
             columnName: 'userEmail',
-            width: 150, // Set a fixed width
+           // width: 150, // Set a fixed width
             label: Container(
               alignment: Alignment.centerRight,
               child: Text('userEmail'),
@@ -91,12 +88,13 @@ class _entitatiState extends State<entitati> {
           ),
           GridColumn(
             columnName: 'timestamp',
-            width: staticVar.fullWidth(context) *.28, // Set a fixed width
+          //  width: 150, // Set a fixed width
             label: Container(
               alignment: Alignment.center,
               child: Text('AddedAt'),
             ),
           ),
+
         ],
       )
     );
@@ -104,57 +102,34 @@ class _entitatiState extends State<entitati> {
     //Container( child: Center(child: Text("entitati page ")),);
   }
 
-  // this function gonna fetch all the orders
-  Future<void> entitiesFromFirrbase() async {
-    // Initialize Firebase
+
+
+  Future<void> uploadDataToFirebaseFromJSON(String userEmail) async {
+    int i = 0 ;
+    // Load JSON data from file (assuming your JSON is in assets folder)
+    final String response = await rootBundle.loadString('assets/ee.json');
+    final List<dynamic> data = json.decode(response);  // Decode the JSON file
+
+    // Get Firestore instance
     FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-    // Define a list to store the fetched data
-    List<Map<String, dynamic>> entitesList = [];
+    for (var item in data) {
+      // Adapt each record to the Firebase structure
+      Map<String, dynamic> adaptedRecord = {
+        'cui': item['CUI Entitate'],
+        'denumire': item['Denumire'],
+        'timestamp': DateTime.now(),
+        'tip': item['Tip'],
+        'userEmail': userEmail,
+      };
+      i++ ;
 
-    try {
-      FirebaseFirestore firestore = FirebaseFirestore.instance;
-      firestore
-          .collection('entitati')
-          .orderBy('timestamp', descending: true)
-          .snapshots()
-          .listen((querySnapshot) {
-        List<entitati_Model> ordersHeper = [];
-
-        for (var doc in querySnapshot.docs) {
-          Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-          data["docId"] = doc.id;
-          entitati_Model entitie = entitati_Model(
-            docId: doc.id,
-            denumire: data['denumire'] ?? '',
-            tip: data['tip'] ?? '',
-            cuiEntitate: data['cui'] ?? '',
-            timestamp: data['timestamp'].toDate(),
-            userEmail: 'userEmail',
-          );
-
-          ordersHeper.add(entitie);
-
-        }
-        entitatiListTodisplay = ordersHeper;
-        entitatiDataSources = entitatiDataSource(orders: entitatiListTodisplay);
-
-
-        setState(() {});
-      });
-    } catch (e) {
-      // Print any errors for debugging purposes
-      print('Error fetching : $e');
-      showTopSnackBar(
-        Overlay.of(context),
-        CustomSnackBar.error(
-          message:
-          "Something went wrong. Please check your credentials and try again",
-        ),
-      );
-
+      // Add to Firebase (assuming you have a collection named 'entities')
+      await firestore.collection('entitati').add(adaptedRecord);
     }
+    print("$i record as been added ");
   }
+
 }
 
 class EntitatiDialog extends StatelessWidget {
@@ -203,18 +178,16 @@ class _EntitatiFormState extends State<EntitatiForm> {
           'cui': cui,
           'tip': tip,
           'denumire': denumire,
-          'timestamp': DateTime.now(), // Firebase server timestamp
-          'userEmail': user!.email, // User's email
+          'timestamp': DateTime.now(),
+          'userEmail': user!.email,
         };
 
-        await FirebaseFirestore.instance.collection('entitati').add(data);
-
-        showTopSnackBar(
-          Overlay.of(context),
-          CustomSnackBar.success(
-            message: "Înregistrarea a fost adăugată cu succes. ",
-          ),
+        // Access the provider and call the addEntitate method
+        await Provider.of<EntitatiProvider>(context, listen: false).addEntitate(
+          context: context,
+          data:data
         );
+        ///await FirebaseFirestore.instance.collection('entitati').add(data);
 
         print("CUI: $cui, Tip: $tip, Denumire: $denumire");
         // Handle form submission
@@ -250,52 +223,55 @@ class _EntitatiFormState extends State<EntitatiForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        mainAxisSize: MainAxisSize.min, // Ensure the dialog is not too tall
-        children: [
-          TextFormField(
-            controller: _cuiController,
-            decoration: _buildInputDecoration('CUI Entitate', Icons.business),
-            validator: (value) {
-              if (value == null || value.trim().isEmpty) {
-                return 'Introduceți CUI Entitate';
-              }
-              return null;
-            },
-          ),
-          SizedBox(height: 20),
-          TextFormField(
-            controller: _tipController,
-            decoration: _buildInputDecoration('Tip', Icons.category),
-            validator: (value) {
-              if (value == null || value.trim().isEmpty) {
-                return 'Introduceți Tipul';
-              }
-              return null;
-            },
-          ),
-          SizedBox(height: 20),
-          TextFormField(
-            controller: _denumireController,
-            decoration: _buildInputDecoration('Denumire', Icons.text_fields),
-            validator: (value) {
-              if (value == null || value.trim().isEmpty) {
-                return 'Introduceți Denumirea';
-              }
-              return null;
-            },
-          ),
-          SizedBox(height: 30),
-          isLoading
-              ? CircularProgressIndicator()
-              : CustomButtons(
-                  label: 'Adaugă entitate',
-                  onPressed:
-                      _submitForm, // Call submit function on button press
-                ),
-        ],
+    return SizedBox(
+      width: staticVar.fullWidth(context) * .3,
+      child: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min, // Ensure the dialog is not too tall
+          children: [
+            TextFormField(
+              controller: _cuiController,
+              decoration: _buildInputDecoration('CUI Entitate', Icons.business),
+              validator: (value) {
+                if (value == null || value.trim().isEmpty) {
+                  return 'Introduceți CUI Entitate';
+                }
+                return null;
+              },
+            ),
+            SizedBox(height: 20),
+            TextFormField(
+              controller: _tipController,
+              decoration: _buildInputDecoration('Tip', Icons.category),
+              validator: (value) {
+                if (value == null || value.trim().isEmpty) {
+                  return 'Introduceți Tipul';
+                }
+                return null;
+              },
+            ),
+            SizedBox(height: 20),
+            TextFormField(
+              controller: _denumireController,
+              decoration: _buildInputDecoration('Denumire', Icons.text_fields),
+              validator: (value) {
+                if (value == null || value.trim().isEmpty) {
+                  return 'Introduceți Denumirea';
+                }
+                return null;
+              },
+            ),
+            SizedBox(height: 30),
+            isLoading
+                ? CircularProgressIndicator()
+                : CustomButtons(
+                    label: 'Adaugă entitate',
+                    onPressed:
+                        _submitForm, // Call submit function on button press
+                  ),
+          ],
+        ),
       ),
     );
   }
