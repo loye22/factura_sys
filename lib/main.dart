@@ -1,6 +1,7 @@
-import 'package:factura_sys/provider/appSheetProvider.dart';
 import 'package:factura_sys/provider/entitatiProvider.dart';
+import 'package:factura_sys/provider/facturaProvider.dart';
 import 'package:factura_sys/provider/ibanProvider.dart';
+import 'package:factura_sys/provider/relatiiProvider.dart';
 import 'package:factura_sys/screens/homeScreen.dart';
 import 'package:factura_sys/screens/loginScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -27,7 +28,9 @@ Future<void> main() async {
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => EntitatiProvider()),
-    ChangeNotifierProvider(create: (context) => ibanProvider()),  ChangeNotifierProvider(create: (context) => appsheetProvider())
+    ChangeNotifierProvider(create: (context) => ibanProvider()),
+    ChangeNotifierProvider(create: (context) => RelatiiProvider()),
+    ChangeNotifierProvider(create: (context) => FacturaProvider()),
   ], child: MyApp()));
 }
 

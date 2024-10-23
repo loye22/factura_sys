@@ -37,7 +37,6 @@ class _ibanUriState extends State<ibanUri> {
   @override
   Widget build(BuildContext context) {
     final ibanProviderVar = Provider.of<ibanProvider>(context);
-
     return Scaffold(
         backgroundColor: Colors.transparent,
         floatingActionButton: FloatingActionButton(
@@ -144,41 +143,6 @@ class _ibanUriState extends State<ibanUri> {
     //Container( child: Center(child: Text("entitati page ")),);
   }
 
-  Future<void> uploadDataToFirebaseFromJSON(String userEmail) async {
-    int i = 0;
-    // Load JSON data from file (assuming your JSON is in assets folder)
-    final String response = await rootBundle.loadString('ee.json');
-    final List<dynamic> data = json.decode(response); // Decode the JSON file
-
-    // Get Firestore instance
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-    for (var item in data) {
-      i++;
-      // Adapt each record to the Firebase structure
-      Map<String, dynamic> adaptedRecord = {
-        'iban': item['IBAN'],
-        'banca': item['Banca'],
-        'cuiTitular': item["CUI Titular"],
-        'denumireTitular': item["Denumire Titular"],
-        'moneda': item["Moneda"],
-        'contPropriu': item["Cont Propriu"].toUpperCase() == "TRUE",
-        'soldInitial': 0.0,
-        // Convert to double
-        'soldCurent': 0.0,
-        // Convert to double
-        'userEmail': userEmail,
-        'timestamp': DateTime.now(),
-        // Assuming timestamp is stored as Timestamp in Firestore
-        'dataPrimaTranzactieExtras': null,
-        'dataUltimaTranzactie': null,
-      };
-
-      // Add to Firebase (assuming you have a collection named 'entities')
-      await firestore.collection('ibans').add(adaptedRecord);
-    }
-    print("$i record as been added ");
-  }
 }
 
 class IBANDialog extends StatelessWidget {
