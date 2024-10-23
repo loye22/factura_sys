@@ -83,18 +83,8 @@ class ibanDataSource extends DataGridSource {
                 value: e.dataUltimaTranzactie,
               ),
 
-              DataGridCell<String>(
-                columnName: 'userEmail',
-                value: e.userEmail,
-              ),
-              DataGridCell<DateTime>(
-                columnName: 'timestamp',
-                value: e.timestamp,
-              ),
-      DataGridCell<String>(
-        columnName: 'docId',
-        value: e.docId,
-      ),
+
+
             ]))
         .toList();
   }

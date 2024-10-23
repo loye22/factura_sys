@@ -37,14 +37,7 @@ class entitatiDataSource extends DataGridSource {
                 columnName: 'Denumire',
                 value: e.denumire,
               ),
-              DataGridCell<String>(
-                columnName: 'userEmail',
-                value: e.userEmail,
-              ),
-              DataGridCell<DateTime>(
-                columnName: 'timestamp',
-                value: e.timestamp,
-              ),
+
 
 
             ]))

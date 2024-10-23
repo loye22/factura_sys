@@ -143,99 +143,12 @@ class staticVar {
           Color colors = const Color(0xFF39A1FF),
           bool disableCenter = true}) =>
       disableCenter
-          ? Column(
-              children: [
-                LoadingAnimationWidget.staggeredDotsWave(
-                  color: colors,
-                  size: size,
-                ),
-                AnimatedTextKit(
-                  animatedTexts: [
-                    RotateAnimatedText(
-                      'Working on it ',
-                      textStyle: const TextStyle(
-                        fontSize: 32.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    RotateAnimatedText(
-                      'Uploading the document ',
-                      textStyle: const TextStyle(
-                        fontSize: 32.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    RotateAnimatedText(
-                      'Uploading the document ',
-                      textStyle: const TextStyle(
-                        fontSize: 32.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    RotateAnimatedText(
-                      'processing the document ',
-                      textStyle: const TextStyle(
-                        fontSize: 32.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    RotateAnimatedText(
-                      'Extracting the text',
-                      textStyle: const TextStyle(
-                        fontSize: 32.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    RotateAnimatedText(
-                      'Extracting the text',
-                      textStyle: const TextStyle(
-                        fontSize: 32.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    RotateAnimatedText(
-                      'Extracting the text',
-                      textStyle: const TextStyle(
-                        fontSize: 32.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    RotateAnimatedText(
-                      'Extracting the text',
-                      textStyle: const TextStyle(
-                        fontSize: 32.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    RotateAnimatedText(
-                      'Extracting the text',
-                      textStyle: const TextStyle(
-                        fontSize: 32.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    RotateAnimatedText(
-                      'Extracting the text',
-                      textStyle: const TextStyle(
-                        fontSize: 32.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    RotateAnimatedText(
-                      'Extracting the text',
-                      textStyle: const TextStyle(
-                        fontSize: 32.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                  totalRepeatCount: 4,
-                  pause: const Duration(milliseconds: 1000),
-                  displayFullTextOnTap: true,
-                  stopPauseOnTap: true,
-                )
-              ],
-            )
+          ? Center(
+            child: LoadingAnimationWidget.staggeredDotsWave(
+              color: colors,
+              size: size,
+            ),
+          )
           : Center(
               child: LoadingAnimationWidget.staggeredDotsWave(
                 color: colors,
@@ -728,7 +641,7 @@ class staticVar {
     } catch (e) {}
   }
 
-  static String urlAPI = "https://5bb9-81-196-26-12.ngrok-free.app/";
-
-
+  static String urlAPI = "https://api.appsheet.com/api/v2/apps/add3deae-595c-41d7-9d86-3fb25daeeee8/tables/";
+  static String urlAPITest =
+      "https://api.appsheet.com/api/v2/apps/add3deae-595c-41d7-9d86-3fb25daeeee8/tables/";
 }

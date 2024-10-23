@@ -44,7 +44,7 @@ class _ibanUriState extends State<ibanUri> {
           tooltip: 'Adaugă entitate',
           backgroundColor: Color(0xFF3776B6),
           onPressed: () async {
-             ///await  uploadDataToFirebaseFromJSON("louie@aurorafoods.ro");
+            ///await  uploadDataToFirebaseFromJSON("louie@aurorafoods.ro");
             showIBANDialog(context);
           },
           child: Icon(
@@ -52,113 +52,94 @@ class _ibanUriState extends State<ibanUri> {
             color: Colors.white,
           ),
         ),
-        body: SfDataGrid(
-          controller: _dataGridController,
-          // showCheckboxColumn: true,
-          // selectionMode: SelectionMode.multiple,
-          allowSorting: true,
-          allowFiltering: true,
-          columnWidthMode: ColumnWidthMode.auto,
+        body: !ibanProviderVar.hasData
+            ? staticVar.loading()
+            : SfDataGrid(
+                controller: _dataGridController,
+                // showCheckboxColumn: true,
+                // selectionMode: SelectionMode.multiple,
+                allowSorting: true,
+                allowFiltering: true,
+                columnWidthMode: ColumnWidthMode.auto,
 
-          // columnWidthMode: ColumnWidthMode.,
-          // Disable auto-resizing
-          source: ibanProviderVar.hasData
-              ? ibanProviderVar.ibanDataSources
-              : ibanDataSource(ibans: []),
-          columns: <GridColumn>[
-            GridColumn(
-              columnName: 'iban',
-              label: Container(
-                alignment: Alignment.center,
-                child: Text('IBAN'),
-              ),
-            ),
-            GridColumn(
-              columnName: 'banca',
-              label: Container(
-                alignment: Alignment.center,
-                child: Text('Banca'),
-              ),
-            ),
-            GridColumn(
-              columnName: 'cuiTitular',
-              label: Container(
-                alignment: Alignment.center,
-                child: Text('cuiTitular'),
-              ),
-            ),
-            GridColumn(
-              columnName: 'denumireTitular',
-              label: Container(
-                alignment: Alignment.center,
-                child: Text('denumireTitular'),
-              ),
-            ),
-            GridColumn(
-              columnName: 'moneda',
-              label: Container(
-                alignment: Alignment.center,
-                child: Text('moneda'),
-              ),
-            ),
-            GridColumn(
-              columnName: 'contPropriu',
-              label: Container(
-                alignment: Alignment.center,
-                child: Text('contPropriu'),
-              ),
-            ),
-            GridColumn(
-              columnName: 'soldInitial',
-              label: Container(
-                alignment: Alignment.center,
-                child: Text('soldInitial'),
-              ),
-            ),
-            GridColumn(
-              columnName: 'soldCurent',
-              label: Container(
-                alignment: Alignment.center,
-                child: Text('soldCurent'),
-              ),
-            ),
-            GridColumn(
-              columnName: 'dataPrimaTranzactieExtras',
-              label: Container(
-                alignment: Alignment.center,
-                child: Text('dataPrimaTranzactieExtras'),
-              ),
-            ),
-            GridColumn(
-              columnName: 'dataUltimaTranzactie',
-              label: Container(
-                alignment: Alignment.center,
-                child: Text('dataUltimaTranzactie'),
-              ),
-            ),
-            GridColumn(
-              columnName: 'userEmail',
-              label: Container(
-                alignment: Alignment.center,
-                child: Text('userEmail'),
-              ),
-            ),
-            GridColumn(
-              columnName: 'timestamp',
-              label: Container(
-                alignment: Alignment.center,
-                child: Text('timestamp'),
-              ),
-            ),
-            GridColumn(
-              columnName: 'docId',
-              label: Container(
-                alignment: Alignment.center,
-                child: Text('docId'),
-              ),
-            )
-          ],
-        ));
+                // columnWidthMode: ColumnWidthMode.,
+                // Disable auto-resizing
+                source: ibanProviderVar.ibanDataSources,
+                columns: <GridColumn>[
+                  GridColumn(
+                    columnName: 'iban',
+                    label: Container(
+                      alignment: Alignment.center,
+                      child: Text('IBAN'),
+                    ),
+                  ),
+                  GridColumn(
+                    columnName: 'banca',
+                    label: Container(
+                      alignment: Alignment.center,
+                      child: Text('Banca'),
+                    ),
+                  ),
+                  GridColumn(
+                    columnName: 'cuiTitular',
+                    label: Container(
+                      alignment: Alignment.center,
+                      child: Text('cuiTitular'),
+                    ),
+                  ),
+                  GridColumn(
+                    columnName: 'denumireTitular',
+                    label: Container(
+                      alignment: Alignment.center,
+                      child: Text('denumireTitular'),
+                    ),
+                  ),
+                  GridColumn(
+                    columnName: 'moneda',
+                    label: Container(
+                      alignment: Alignment.center,
+                      child: Text('moneda'),
+                    ),
+                  ),
+                  GridColumn(
+                    columnName: 'contPropriu',
+                    label: Container(
+                      alignment: Alignment.center,
+                      child: Text('contPropriu'),
+                    ),
+                  ),
+                  GridColumn(
+                    columnName: 'soldInitial',
+                    label: Container(
+                      alignment: Alignment.center,
+                      child: Text('soldInitial'),
+                    ),
+                  ),
+                  GridColumn(
+                    columnName: 'soldCurent',
+                    label: Container(
+                      alignment: Alignment.center,
+                      child: Text('soldCurent'),
+                    ),
+                  ),
+                  GridColumn(
+                    columnName: 'dataPrimaTranzactieExtras',
+                    label: Container(
+                      alignment: Alignment.center,
+                      child: Text('dataPrimaTranzactieExtras'),
+                    ),
+                  ),
+                  GridColumn(
+                    columnName: 'dataUltimaTranzactie',
+                    label: Container(
+                      alignment: Alignment.center,
+                      child: Text('dataUltimaTranzactie'),
+                    ),
+
+
+                  )
+                ],
+              ));
 
     //Container( child: Center(child: Text("entitati page ")),);
   }
@@ -172,27 +153,26 @@ class _ibanUriState extends State<ibanUri> {
     // Get Firestore instance
     FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-
-
     for (var item in data) {
-      i++ ;
+      i++;
       // Adapt each record to the Firebase structure
       Map<String, dynamic> adaptedRecord = {
-
         'iban': item['IBAN'],
         'banca': item['Banca'],
         'cuiTitular': item["CUI Titular"],
         'denumireTitular': item["Denumire Titular"],
         'moneda': item["Moneda"],
         'contPropriu': item["Cont Propriu"].toUpperCase() == "TRUE",
-        'soldInitial':  0.0 , // Convert to double
-        'soldCurent': 0.0 ,   // Convert to double
+        'soldInitial': 0.0,
+        // Convert to double
+        'soldCurent': 0.0,
+        // Convert to double
         'userEmail': userEmail,
-        'timestamp': DateTime.now(), // Assuming timestamp is stored as Timestamp in Firestore
-        'dataPrimaTranzactieExtras': null ,
-        'dataUltimaTranzactie':null ,
+        'timestamp': DateTime.now(),
+        // Assuming timestamp is stored as Timestamp in Firestore
+        'dataPrimaTranzactieExtras': null,
+        'dataUltimaTranzactie': null,
       };
-
 
       // Add to Firebase (assuming you have a collection named 'entities')
       await firestore.collection('ibans').add(adaptedRecord);
@@ -299,7 +279,7 @@ class _IBANFormState extends State<IBANForm> {
         'soldInitial': soldInitial ?? 0.0,
         'soldCurent': soldCurent ?? 0.0,
         'timestamp': DateTime.now(),
-        'userEmail': user!.email ,
+        'userEmail': user!.email,
       };
 
       // Access the provider and call the addEntitate method
