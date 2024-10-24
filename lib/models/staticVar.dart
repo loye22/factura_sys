@@ -641,6 +641,12 @@ class staticVar {
     } catch (e) {}
   }
 
+  static void printMap(Map<String, dynamic> inputMap) {
+    inputMap.forEach((key, value) {
+      print('$key: $value, ${value.runtimeType}');
+    });
+  }
+
   static String urlAPI = "https://api.appsheet.com/api/v2/apps/add3deae-595c-41d7-9d86-3fb25daeeee8/tables/";
   static String urlAPITest =
       "https://api.appsheet.com/api/v2/apps/add3deae-595c-41d7-9d86-3fb25daeeee8/tables/";

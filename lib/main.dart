@@ -1,6 +1,11 @@
+import 'package:factura_sys/provider/IntrariProvider.dart';
+import 'package:factura_sys/provider/gestiuneMasiniProvider.dart';
+import 'package:factura_sys/provider/angajatiProvider.dart';
+import 'package:factura_sys/provider/concediiProvider.dart';
 import 'package:factura_sys/provider/entitatiProvider.dart';
 import 'package:factura_sys/provider/facturaProvider.dart';
 import 'package:factura_sys/provider/ibanProvider.dart';
+import 'package:factura_sys/provider/politeProvider.dart';
 import 'package:factura_sys/provider/relatiiProvider.dart';
 import 'package:factura_sys/screens/homeScreen.dart';
 import 'package:factura_sys/screens/loginScreen.dart';
@@ -31,6 +36,11 @@ Future<void> main() async {
     ChangeNotifierProvider(create: (context) => ibanProvider()),
     ChangeNotifierProvider(create: (context) => RelatiiProvider()),
     ChangeNotifierProvider(create: (context) => FacturaProvider()),
+    ChangeNotifierProvider(create: (context) => AngajatiProvider()),
+    ChangeNotifierProvider(create: (context) => concediiProvider()),
+    ChangeNotifierProvider(create: (context) => gestinueMasiniProvider()),
+    ChangeNotifierProvider(create: (context) => politeProvider()),
+    ChangeNotifierProvider(create: (context) => IntrariProvider()),
   ], child: MyApp()));
 }
 
