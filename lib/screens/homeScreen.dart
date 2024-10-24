@@ -90,7 +90,7 @@ class _homeScreenState extends State<homeScreen> {
   @override
   Widget build(BuildContext context) {
     /// test
-    //  openTab("tabTitle", intrariService());
+    //  openTab("tabTitle", taguri());
 
     TabbedView tabbedView = TabbedView(
       controller: _controller,

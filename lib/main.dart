@@ -7,6 +7,9 @@ import 'package:factura_sys/provider/facturaProvider.dart';
 import 'package:factura_sys/provider/ibanProvider.dart';
 import 'package:factura_sys/provider/politeProvider.dart';
 import 'package:factura_sys/provider/relatiiProvider.dart';
+import 'package:factura_sys/provider/statusProvider.dart';
+import 'package:factura_sys/provider/taguriProvider.dart';
+import 'package:factura_sys/provider/taxesProvider.dart';
 import 'package:factura_sys/screens/homeScreen.dart';
 import 'package:factura_sys/screens/loginScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -41,6 +44,9 @@ Future<void> main() async {
     ChangeNotifierProvider(create: (context) => gestinueMasiniProvider()),
     ChangeNotifierProvider(create: (context) => politeProvider()),
     ChangeNotifierProvider(create: (context) => IntrariProvider()),
+    ChangeNotifierProvider(create: (context) => statusProvider()),
+    ChangeNotifierProvider(create: (context) => TaxesProvider()),
+    ChangeNotifierProvider(create: (context) => TaguriProvider()),
   ], child: MyApp()));
 }
 
