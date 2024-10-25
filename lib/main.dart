@@ -1,4 +1,7 @@
 import 'package:factura_sys/provider/IntrariProvider.dart';
+import 'package:factura_sys/provider/TranzactiiProvider.dart';
+import 'package:factura_sys/provider/categorieProvider.dart';
+import 'package:factura_sys/provider/firmGestiuneProvider.dart';
 import 'package:factura_sys/provider/gestiuneMasiniProvider.dart';
 import 'package:factura_sys/provider/angajatiProvider.dart';
 import 'package:factura_sys/provider/concediiProvider.dart';
@@ -47,6 +50,9 @@ Future<void> main() async {
     ChangeNotifierProvider(create: (context) => statusProvider()),
     ChangeNotifierProvider(create: (context) => TaxesProvider()),
     ChangeNotifierProvider(create: (context) => TaguriProvider()),
+    ChangeNotifierProvider(create: (context) => categorieProvider()),
+    ChangeNotifierProvider(create: (context) => firmGestiuneProvider()),
+    ChangeNotifierProvider(create: (context) => TranzactiiProvider()),
   ], child: MyApp()));
 }
 
