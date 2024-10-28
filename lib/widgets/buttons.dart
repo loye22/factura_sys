@@ -36,7 +36,7 @@ class _CustomButtonsState extends State<CustomButtons> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15), // Sharp edges
           ),
-          backgroundColor: Color(0xFF337AB7),
+          backgroundColor: const Color(0xFF444444),
           minimumSize: Size(double.infinity, 50),
         ),
       ),

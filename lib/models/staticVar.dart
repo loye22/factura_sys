@@ -140,7 +140,7 @@ class staticVar {
 
   static Widget loading(
           {double size = 100,
-          Color colors = const Color(0xFF39A1FF),
+          Color colors = const Color(0xFF444444),
           bool disableCenter = true}) =>
       disableCenter
           ? Center(
