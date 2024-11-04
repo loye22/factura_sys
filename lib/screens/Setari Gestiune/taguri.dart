@@ -22,7 +22,7 @@ class _taguriState extends State<taguri> {
       backgroundColor: Colors.transparent,
       floatingActionButton: FloatingActionButton(
         tooltip: 'Adaugă Tag',
-        backgroundColor: Color(0xFF3776B6),
+        backgroundColor:  staticVar.themeColor,
         onPressed: () async {
           showTagDialog(context);
         },

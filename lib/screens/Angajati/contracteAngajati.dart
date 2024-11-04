@@ -38,7 +38,7 @@ class _contracteAngajatiState extends State<contracteAngajati> {
       backgroundColor: Colors.transparent,
       floatingActionButton: FloatingActionButton(
         tooltip: 'Adaugă Angajat',
-        backgroundColor: const Color(0xFF3776B6),
+        backgroundColor:  staticVar.themeColor,
         onPressed: () async {
           showAngajatiDialog(context);
         },

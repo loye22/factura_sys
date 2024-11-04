@@ -8,6 +8,8 @@ import 'package:factura_sys/provider/concediiProvider.dart';
 import 'package:factura_sys/provider/entitatiProvider.dart';
 import 'package:factura_sys/provider/facturaProvider.dart';
 import 'package:factura_sys/provider/ibanProvider.dart';
+import 'package:factura_sys/provider/marcaMasinaProvider.dart';
+import 'package:factura_sys/provider/modelMasinaProvider.dart';
 import 'package:factura_sys/provider/politeProvider.dart';
 import 'package:factura_sys/provider/relatiiProvider.dart';
 import 'package:factura_sys/provider/statusProvider.dart';
@@ -15,6 +17,7 @@ import 'package:factura_sys/provider/taguriProvider.dart';
 import 'package:factura_sys/provider/taxesProvider.dart';
 import 'package:factura_sys/screens/homeScreen.dart';
 import 'package:factura_sys/screens/loginScreen.dart';
+import 'package:factura_sys/widgets/gestiuneMasiniDrawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -53,6 +56,8 @@ Future<void> main() async {
     ChangeNotifierProvider(create: (context) => categorieProvider()),
     ChangeNotifierProvider(create: (context) => firmGestiuneProvider()),
     ChangeNotifierProvider(create: (context) => TranzactiiProvider()),
+    ChangeNotifierProvider(create: (context) => MarcaMasinaProvider()),
+    ChangeNotifierProvider(create: (context) => modelMasinaProvider()),
   ], child: MyApp()));
 }
 
@@ -67,6 +72,8 @@ class MyApp extends StatelessWidget {
     ]);
     return MaterialApp(
       // debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+          useMaterial3: true, colorScheme: Theme.of(context).colorScheme),
 
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),

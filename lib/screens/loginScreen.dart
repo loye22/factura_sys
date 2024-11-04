@@ -1,4 +1,5 @@
 import 'package:factura_sys/models/staticVar.dart';
+import 'package:factura_sys/widgets/gestiuneMasiniDrawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,10 +29,13 @@ class _loginScreenState extends State<loginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Left side: Icon/Illustration
-              Container(
-                width: staticVar.fullWidth(context) * .4,
-                height: staticVar.fullhigth(context),
-                child: Image.asset('assets/invoice_icon.png'), // Replace with your asset
+              Expanded(
+                child: Container(
+                  // decoration: BoxDecoration(border: Border.all()),
+                  width: staticVar.fullWidth(context) * .3,
+                  height: staticVar.fullhigth(context),
+                  child:   Image.asset('assets/invoice_icon.png' ), // Replace with your asset
+                ),
               ),
               SizedBox(width: 50),
 
@@ -48,7 +52,7 @@ class _loginScreenState extends State<loginScreen> {
                         // Logo and title
                         Row(
                           children: [
-                            Icon(Icons.description, color: Color(0xFF337AB7), size: 50),
+                            Icon(Icons.description, color: Color(0xFF444444), size: 50),
                             SizedBox(width: 10),
                             Text(
                               'FinoPro',
@@ -113,7 +117,7 @@ class _loginScreenState extends State<loginScreen> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.zero, // Sharp edges
                             ),
-                            backgroundColor: Color(0xFF337AB7),
+                            backgroundColor: Color(0xFF444444),
                             minimumSize: Size(double.infinity, 50),
                           ),
                         ),

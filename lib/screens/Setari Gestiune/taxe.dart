@@ -24,7 +24,7 @@ class _taxeState extends State<taxe> {
         backgroundColor: Colors.transparent,
         floatingActionButton: FloatingActionButton(
           tooltip: 'Adaugă Taxă',
-          backgroundColor: Color(0xFF3776B6),
+          backgroundColor:  staticVar.themeColor,
           onPressed: () async {
             showTaxesDialog(context);
           },

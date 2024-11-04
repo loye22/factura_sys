@@ -41,7 +41,7 @@ class _ibanUriState extends State<ibanUri> {
         backgroundColor: Colors.transparent,
         floatingActionButton: FloatingActionButton(
           tooltip: 'Adaugă entitate',
-          backgroundColor: Color(0xFF3776B6),
+          backgroundColor:  staticVar.themeColor,
           onPressed: () async {
             ///await  uploadDataToFirebaseFromJSON("louie@aurorafoods.ro");
             showIBANDialog(context);

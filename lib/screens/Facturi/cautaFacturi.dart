@@ -1,7 +1,3 @@
-
-
-
-
 import 'package:factura_sys/models/Facturi_Model.dart';
 import 'package:factura_sys/models/staticVar.dart';
 import 'package:factura_sys/provider/facturaProvider.dart';
@@ -27,7 +23,7 @@ class _cautaFacturiState extends State<cautaFacturi> {
       backgroundColor: Colors.transparent,
       floatingActionButton: FloatingActionButton(
         tooltip: 'Adaugă factură',
-        backgroundColor: Color(0xFF3776B6),
+        backgroundColor:  staticVar.themeColor,
         onPressed: () async {
           //showFacturaDialog(context);
         },

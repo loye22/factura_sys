@@ -32,7 +32,7 @@ class _concediiState extends State<concedii> {
             backgroundColor: Colors.transparent,
             floatingActionButton: FloatingActionButton(
               tooltip: 'Adaugă concediu',
-              backgroundColor: Color(0xFF3776B6),
+              backgroundColor: staticVar.themeColor,
               onPressed: () async {
 
               },

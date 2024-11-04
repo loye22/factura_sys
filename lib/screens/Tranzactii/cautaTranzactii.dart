@@ -31,7 +31,7 @@ class _cautaTranzactiiState extends State<cautaTranzactii> {
       backgroundColor: Colors.transparent,
       floatingActionButton: FloatingActionButton(
         tooltip: 'Adaugă tranzacție',
-        backgroundColor: Color(0xFF3776B6),
+        backgroundColor: staticVar.themeColor,
         onPressed: () async {
           // showTranzactiiDialog(context);
         },

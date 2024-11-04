@@ -30,61 +30,64 @@ class _entitatiState extends State<entitati> {
   @override
   Widget build(BuildContext context) {
     final entitatiProvider = Provider.of<EntitatiProvider>(context);
-    return !entitatiProvider.hasData ? staticVar.loading() :  Scaffold(
-        backgroundColor: Colors.transparent,
-        floatingActionButton: FloatingActionButton(
-          tooltip: 'Adaugă entitate',
-          backgroundColor: Color(0xFF3776B6),
-          onPressed: () async {
-            /// await  uploadDataToFirebaseFromJSON("louie@aurorafoods.ro");
-            showEntitatiDialog(context);
-          },
-          child: Icon(
-            Icons.add,
-            color: Colors.white,
-          ),
-        ),
-        body: SfDataGrid(
-          controller: _dataGridController,
-          // showCheckboxColumn: true,
-          // selectionMode: SelectionMode.multiple,
-          allowSorting: true,
-          allowFiltering: true,
-          columnWidthMode: ColumnWidthMode.fill,
-
-          // columnWidthMode: ColumnWidthMode.,
-          // Disable auto-resizing
-
-          source: entitatiProvider.hasData ? entitatiProvider.entitatiDataSources :
-              entitatiDataSource(orders: []),
-          //entitatiDataSources,
-          columns: <GridColumn>[
-            GridColumn(
-              columnName: 'cuiEntitate',
-              label: Container(
-                alignment: Alignment.center,
-                child: Text('CUI Entitate'),
+    return !entitatiProvider.hasData
+        ? staticVar.loading()
+        : Scaffold(
+            backgroundColor: Colors.transparent,
+            floatingActionButton: FloatingActionButton(
+              tooltip: 'Adaugă entitate',
+              backgroundColor: staticVar.themeColor,
+              onPressed: () async {
+                /// await  uploadDataToFirebaseFromJSON("louie@aurorafoods.ro");
+                showEntitatiDialog(context);
+              },
+              child: Icon(
+                Icons.add,
+                color: Colors.white,
               ),
             ),
-            GridColumn(
-              columnName: 'tip',
+            body: SfDataGrid(
+              controller: _dataGridController,
+              // showCheckboxColumn: true,
+              // selectionMode: SelectionMode.multiple,
+              allowSorting: true,
+              allowFiltering: true,
+              columnWidthMode: ColumnWidthMode.fill,
 
-              ///   width: 150, // Set a fixed width
-              label: Container(
-                alignment: Alignment.center,
-                child: Text('Tip'),
-              ),
-            ),
-            GridColumn(
-              columnName: 'Denumire',
-              //  width: 150, // Set a fixed width
-              label: Container(
-                alignment: Alignment.center,
-                child: Text('Denumire'),
-              ),
-            ),
-          ],
-        ));
+              // columnWidthMode: ColumnWidthMode.,
+              // Disable auto-resizing
+
+              source: entitatiProvider.hasData
+                  ? entitatiProvider.entitatiDataSources
+                  : entitatiDataSource(orders: []),
+              //entitatiDataSources,
+              columns: <GridColumn>[
+                GridColumn(
+                  columnName: 'cuiEntitate',
+                  label: Container(
+                    alignment: Alignment.center,
+                    child: Text('CUI Entitate'),
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'tip',
+
+                  ///   width: 150, // Set a fixed width
+                  label: Container(
+                    alignment: Alignment.center,
+                    child: Text('Tip'),
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'Denumire',
+                  //  width: 150, // Set a fixed width
+                  label: Container(
+                    alignment: Alignment.center,
+                    child: Text('Denumire'),
+                  ),
+                ),
+              ],
+            ));
 
     //Container( child: Center(child: Text("entitati page ")),);
   }
@@ -119,7 +122,6 @@ class _entitatiState extends State<entitati> {
 class EntitatiDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return AlertDialog(
       title: Text("Adaugă Entitate"),
       content: EntitatiForm(),
@@ -171,7 +173,8 @@ class _EntitatiFormState extends State<EntitatiForm> {
 
         ///await FirebaseFirestore.instance.collection('entitati').add(data);
 
-        print("CUI: $cui, Tip: $selectedValueFromDropDown, Denumire: $denumire");
+        print(
+            "CUI: $cui, Tip: $selectedValueFromDropDown, Denumire: $denumire");
         // Handle form submission
         Navigator.of(context).pop(); // Close the dialog after submission
       } else {
@@ -206,14 +209,11 @@ class _EntitatiFormState extends State<EntitatiForm> {
   String? selectedValueFromDropDown;
   final TextEditingController textEditingController = TextEditingController();
 
-
   @override
   void dispose() {
     textEditingController.dispose();
     super.dispose();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -240,7 +240,7 @@ class _EntitatiFormState extends State<EntitatiForm> {
             ),
             SizedBox(height: 20),
             CustomDropdown(
-               items:entitatiProviderForTips.tipuriList ,
+              items: entitatiProviderForTips.tipuriList,
               selectedValue: selectedValueFromDropDown,
               textEditingController: textEditingController,
               onChanged: (value) {
@@ -251,7 +251,6 @@ class _EntitatiFormState extends State<EntitatiForm> {
               onAddNewItemPressed: () {
                 print('Add new item pressed');
               },
-
             ),
             // TextFormField(
             //   controller: _tipController,

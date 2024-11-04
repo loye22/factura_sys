@@ -16,6 +16,10 @@ class EntitatiProvider with ChangeNotifier {
   // Check if data has already been fetched
   bool get hasData => _entitatiList != null && _entitatiList.isNotEmpty;
 
+  // Getter for _entitatiList
+  List<entitati_Model> get entitatiList => _entitatiList;
+
+
 
   // Add a new list to store the 'Tipuri' data
   List<String> _tipuriList = [];

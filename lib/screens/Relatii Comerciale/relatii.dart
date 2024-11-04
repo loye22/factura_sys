@@ -36,7 +36,7 @@ class _relatiiState extends State<relatii> {
       backgroundColor: Colors.transparent,
       floatingActionButton: FloatingActionButton(
         tooltip: 'Adaugă relație',
-        backgroundColor: Color(0xFF3776B6),
+        backgroundColor:  staticVar.themeColor,
         onPressed: () async {
           showRelatiiDialog(context);
        //   showRelatiiDialog(context);

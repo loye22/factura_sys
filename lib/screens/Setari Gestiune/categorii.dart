@@ -27,7 +27,7 @@ class _categoriiState extends State<categorii> {
       backgroundColor: Colors.transparent,
       floatingActionButton: FloatingActionButton(
         tooltip: 'Adaugă Categorie',
-        backgroundColor: Color(0xFF3776B6),
+        backgroundColor:  staticVar.themeColor,
         onPressed: () async {
           showCategorieDialog(context);
         },

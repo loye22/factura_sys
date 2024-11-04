@@ -30,7 +30,7 @@ class _statusuriState extends State<statusuri> {
         backgroundColor: Colors.transparent,
         floatingActionButton: FloatingActionButton(
           tooltip: 'Adaugă Status',
-          backgroundColor: Color(0xFF3776B6),
+          backgroundColor:  staticVar.themeColor,
           onPressed: () async {
             showStatusDialog(context);
           },

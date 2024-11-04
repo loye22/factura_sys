@@ -32,7 +32,7 @@ class _intrariServiceState extends State<intrariService> {
       backgroundColor: Colors.transparent,
       floatingActionButton: FloatingActionButton(
         tooltip: 'Adaugă intrare',
-        backgroundColor: Color(0xFF3776B6),
+        backgroundColor:  staticVar.themeColor,
         onPressed: () async {
           //showIntrariServiceDialog(context);
         },

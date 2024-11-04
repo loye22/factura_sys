@@ -23,7 +23,7 @@ class footer extends StatelessWidget {
           CircleAvatar(
             radius: 16, // Adjust the size as needed
             backgroundImage: AssetImage(
-                'avatar.png'), // Replace with your avatar image path
+                'assets/avatar.png'), // Replace with your avatar image path
           ),
           NotificationIcon(), // Notification icon with dropdown menu
         ],

@@ -156,7 +156,6 @@ class staticVar {
               ),
             );
 
-  static Color colorTheme = Color(0xFF39A1FF);
 
   static Future<void> showSubscriptionSnackbar(
       {required BuildContext context,
@@ -648,6 +647,22 @@ class staticVar {
   }
 
   static String urlAPI = "https://api.appsheet.com/api/v2/apps/add3deae-595c-41d7-9d86-3fb25daeeee8/tables/";
-  static String urlAPITest =
-      "https://api.appsheet.com/api/v2/apps/add3deae-595c-41d7-9d86-3fb25daeeee8/tables/";
+  static String urlAPITest = "https://api.appsheet.com/api/v2/apps/add3deae-595c-41d7-9d86-3fb25daeeee8/tables/";
+  static Color themeColor =  const Color(0xFF444444) ;
+
+  static DateTime convertStringToDate(String? dateStr) {
+    if(dateStr == null ){
+      return DateTime(1100);
+    }
+    try {
+      // Define the date format matching your input
+      final DateFormat dateFormat = DateFormat('MM/dd/yyyy');
+      // Parse the string and return the DateTime object
+      return dateFormat.parse(dateStr);
+    }
+    catch(e){
+      return DateTime(0000-00-00);
+    }
+  }
+
 }

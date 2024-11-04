@@ -15,10 +15,10 @@ class gestinueMasini_Model {
   final String utilizator;
   final String kilometraj;
   final String tipCombustibil;
-  final String valabilitateRCA;
-  final String valabilitateITP;
-  final String valabilitateROVINIETA;
-  final String valabilitateCASCO;
+  final DateTime valabilitateRCA;
+  final DateTime valabilitateITP;
+  final DateTime valabilitateROVINIETA;
+  final DateTime valabilitateCASCO;
   final String responsabil;
   final String valoareAchizitie;
   final String moneda;
@@ -97,19 +97,19 @@ class gestinueMasiniDataSource extends DataGridSource {
                 columnName: 'tipCombustibil',
                 value: e.tipCombustibil,
               ),
-              DataGridCell<String>(
+              DataGridCell<DateTime>(
                 columnName: 'valabilitateRCA',
                 value: e.valabilitateRCA,
               ),
-              DataGridCell<String>(
+              DataGridCell<DateTime>(
                 columnName: 'valabilitateITP',
                 value: e.valabilitateITP,
               ),
-              DataGridCell<String>(
+              DataGridCell<DateTime>(
                 columnName: 'valabilitateROVINIETA',
                 value: e.valabilitateROVINIETA,
               ),
-              DataGridCell<String>(
+              DataGridCell<DateTime>(
                 columnName: 'valabilitateCASCO',
                 value: e.valabilitateCASCO,
               ),

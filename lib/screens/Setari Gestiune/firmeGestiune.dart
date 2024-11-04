@@ -29,7 +29,7 @@ class _firmeGestiuneState extends State<firmeGestiune> {
       backgroundColor: Colors.transparent,
       floatingActionButton: FloatingActionButton(
         tooltip: 'Adaugă Firmă',
-        backgroundColor: Color(0xFF3776B6),
+        backgroundColor:  staticVar.themeColor,
         onPressed: () async {
           // showFirmeGestiuneDialog(context);
 

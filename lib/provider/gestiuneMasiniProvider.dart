@@ -2,9 +2,6 @@ import 'dart:convert';
 import 'package:factura_sys/models/gestinueMasini_Model.dart';
 import 'package:factura_sys/models/staticVar.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:top_snackbar_flutter/custom_snack_bar.dart';
-import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:http/http.dart' as http;
 
 class gestinueMasiniProvider with ChangeNotifier {
@@ -22,6 +19,7 @@ class gestinueMasiniProvider with ChangeNotifier {
   }
 
   Future<void> fetchMasiniFromAppSheet() async {
+    return ;
     if (_masiniList.isNotEmpty) {
       print("Data is already loaded from the provider.");
       return;
@@ -62,10 +60,10 @@ class gestinueMasiniProvider with ChangeNotifier {
             utilizator: item['Utilizator'] ?? 'NOTFOUND',
             kilometraj: item['Kilometraj'] ?? "0.0",
             tipCombustibil: item['Tip Combustibil'] ?? 'NOTFOUND',
-            valabilitateRCA: item['Valabilitate RCA'] ?? 'NOTFOUND',
-            valabilitateITP: item['Valabilitate ITP'] ?? 'NOTFOUND',
-            valabilitateROVINIETA: item['Valabilitate ROVINIETA'] ?? 'NOTFOUND',
-            valabilitateCASCO: item['Valabilitate CASCO'] ?? 'NOTFOUND',
+            valabilitateRCA: staticVar.convertStringToDate(item['Valabilitate RCA']),
+            valabilitateITP:staticVar.convertStringToDate (item['Valabilitate ITP'] ),
+            valabilitateROVINIETA:staticVar.convertStringToDate(item['Valabilitate ROVINIETA']) ,
+            valabilitateCASCO:staticVar.convertStringToDate(item['Valabilitate CASCO']) ,
             responsabil: item['Responsabil'] ?? 'NOTFOUND',
             valoareAchizitie: item['Valoare Achizitie'] ?? '0',
             moneda: item['Moneda'] ?? 'NOTFOUND',

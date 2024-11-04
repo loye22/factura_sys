@@ -31,7 +31,7 @@ class _politeState extends State<polite> {
       // Floating action button to add new polite
       floatingActionButton: FloatingActionButton(
         tooltip: 'Adaugă polite',
-        backgroundColor: Color(0xFF3776B6),
+        backgroundColor:  staticVar.themeColor,
         onPressed: () async {
           // showPoliteDialog(context);
         },
