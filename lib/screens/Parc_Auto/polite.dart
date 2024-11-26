@@ -1,8 +1,6 @@
 
- import 'package:factura_sys/models/polite_Model.dart';
 import 'package:factura_sys/provider/politeProvider.dart';
 import 'package:factura_sys/widgets/buttons.dart'; // Custom button widget
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -31,9 +29,9 @@ class _politeState extends State<polite> {
       // Floating action button to add new polite
       floatingActionButton: FloatingActionButton(
         tooltip: 'Adaugă polite',
-        backgroundColor:  staticVar.themeColor,
+        backgroundColor: staticVar.themeColor ,
         onPressed: () async {
-          // showPoliteDialog(context);
+          showPolitieForm(context);
         },
         child: Icon(
           Icons.add,
@@ -154,146 +152,273 @@ class _politeState extends State<polite> {
   }
 }
 
-// Function to show the polite dialog
-void showPoliteDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (context) {
-      return PoliteDialog();
-    },
-  );
-}
+ class PolitieDialog extends StatelessWidget {
+   @override
+   Widget build(BuildContext context) {
+     return AlertDialog(
+       title: Text("Adaugă Poliță Asigurare"),
+       content: PolitieForm(),
+       actions: [
+         TextButton(
+           onPressed: () {
+             Navigator.of(context).pop(); // Close the dialog
+           },
+           child: Text("Anulează"),
+         ),
+       ],
+     );
+   }
+ }
 
-// Dialog widget for adding new polite
-class PoliteDialog extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text("Adaugă polite"),
-      content: PoliteForm(), // Form for inputting polite data
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop(); // Close the dialog
-          },
-          child: Text("Anulează"),
-        ),
-      ],
-    );
-  }
-}
+ class PolitieForm extends StatefulWidget {
+   @override
+   State<PolitieForm> createState() => _PolitieFormState();
+ }
 
-// Form widget for adding polite
-class PoliteForm extends StatefulWidget {
-  @override
-  State<PoliteForm> createState() => _PoliteFormState();
-}
+ class _PolitieFormState extends State<PolitieForm> {
+   final _formKey = GlobalKey<FormState>();
 
-class _PoliteFormState extends State<PoliteForm> {
-  final _formKey = GlobalKey<FormState>();
-  final _numeClientController = TextEditingController();
-  final _dataEmitereController = TextEditingController();
-  final _totalController = TextEditingController();
-  bool isLoading = false;
+   final _serieSasiuController = TextEditingController();
+   final _numarInmatricularController = TextEditingController();
+   final _marcaController = TextEditingController();
+   final _modelController = TextEditingController();
+   final _cuiFurnizorController = TextEditingController();
+   final _numeFurnizorController = TextEditingController();
+   final _idFacturaController = TextEditingController();
+   final _totalPlataController = TextEditingController();
+   final _statusPlataController = TextEditingController();
+   final _fisierPolitaController = TextEditingController();
 
-  // Function to submit the form
-  Future<void> _submitForm() async {
-    if (_formKey.currentState!.validate()) {
-      setState(() {
-        isLoading = true;
-      });
+   String? tipPolitaSelectedValue;
+   DateTime? _valabilitateDeLa;
+   DateTime? _valabilitatePanaLa;
 
-      // Collecting input data
-      final numeClient = _numeClientController.text.trim();
-      final dataEmitere = _dataEmitereController.text.trim();
-      final total = double.tryParse(_totalController.text.trim()) ?? 0.0;
-      User? user = FirebaseAuth.instance.currentUser;
+   bool isLoading = false;
 
-      // Prepare the data to be added
-      Map<String, dynamic> data = {
-        'numeClient': numeClient,
-        'dataEmitere': dataEmitere,
-        'total': total,
-        'timestamp': DateTime.now(),
-        'userEmail': user!.email,
-      };
+   Future<void> _submitForm() async {
+     try {
+       if (_formKey.currentState!.validate()) {
+         setState(() {
+           isLoading = true;
+         });
 
-      // Access the provider and call the addPolite method
-      // await Provider.of<politeProvider>(context, listen: false)
-      //     .addPolite(context: context, data: data);
+         final serieSasiu = _serieSasiuController.text.trim();
+         final numarInmatricular = _numarInmatricularController.text.trim();
+         final marca = _marcaController.text.trim();
+         final model = _modelController.text.trim();
+         final cuiFurnizor = _cuiFurnizorController.text.trim();
+         final numeFurnizor = _numeFurnizorController.text.trim();
+         final idFactura = _idFacturaController.text.trim();
+         final totalPlata = _totalPlataController.text.isNotEmpty
+             ? double.tryParse(_totalPlataController.text.trim())
+             : null;
+         final statusPlata = _statusPlataController.text.trim();
+         final fisierPolita = _fisierPolitaController.text.trim();
 
-      Navigator.of(context).pop(); // Close the dialog after submission
-    }
-  }
+         // Prepare the data to be added
+         Map<String, dynamic> data = {
+           'Tip Polita': tipPolitaSelectedValue,
+           'Serie Sasiu': serieSasiu,
+           'Numar Inmatriculare': numarInmatricular,
+           'Marca': marca,
+           'Model': model,
+           'CUI Furnizor': cuiFurnizor,
+           'Nume Furnizor': numeFurnizor,
+           'Valabilitate De la': _valabilitateDeLa?.toString(),
+           'Valabilitate Pana la': _valabilitatePanaLa?.toString(),
+           'ID Factura': idFactura,
+           'Total Plata': totalPlata ?? 0.0,
+           'Status Plata': statusPlata,
+           'Fisier Polita': fisierPolita,
+         };
 
-  // Function to build input decoration for text fields
-  InputDecoration _buildInputDecoration(String label, IconData icon) {
-    return InputDecoration(
-      labelStyle: TextStyle(color: Color(0xFF444444)),
-      labelText: label,
-      prefixIcon: Icon(icon),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      errorStyle: TextStyle(color: Colors.redAccent),
-    );
-  }
+         // Access the provider and call the addPolitie method
+         // await Provider.of<PolitieProvider>(context, listen: false)
+         //     .addPolitie(context: context, data: data);
+         Navigator.of(context).pop();
+       }
+     } catch (e) {
+       print("Error $e");
+     } finally {
+       isLoading = false;
+       setState(() {});
+     }
+   }
 
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: staticVar.fullWidth(context) * .3,
-      child: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(height: 20),
-              TextFormField(
-                controller: _numeClientController,
-                decoration: _buildInputDecoration('Nume Client', Icons.person),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Introduceți numele clientului';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              TextFormField(
-                controller: _dataEmitereController,
-                decoration: _buildInputDecoration('Data Emitere', Icons.date_range),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Introduceți data emiterii';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              TextFormField(
-                controller: _totalController,
-                decoration: _buildInputDecoration('Total', Icons.money),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Introduceți totalul';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 30),
-              isLoading
-                  ? CircularProgressIndicator()
-                  : CustomButtons(
-                label: 'Adaugă polite',
-                onPressed: _submitForm, // Submit the form
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+   InputDecoration _buildInputDecoration(String label, IconData icon) {
+     return InputDecoration(
+       labelStyle: TextStyle(color: Color(0xFF444444)),
+       labelText: label,
+       prefixIcon: Icon(icon),
+       border: OutlineInputBorder(
+         borderRadius: BorderRadius.circular(10.0),
+       ),
+       errorStyle: TextStyle(color: Colors.redAccent),
+     );
+   }
+
+   @override
+   Widget build(BuildContext context) {
+     return SizedBox(
+       width: MediaQuery.of(context).size.width * 0.3,
+       child: SingleChildScrollView(
+         child: Padding(
+           padding: const EdgeInsets.all(16.0),
+           child: Form(
+             key: _formKey,
+             child: Column(
+               mainAxisSize: MainAxisSize.min,
+               children: [
+                 SizedBox(height: 20),
+                 TextFormField(
+                   controller: _serieSasiuController,
+                   maxLength: 30,
+                   decoration: _buildInputDecoration('Serie Șasiu', Icons.directions_car
+                   ),
+                   validator: (value) {
+                     if (value == null || value.trim().isEmpty) {
+                       return 'Introduceți Serie Șasiu';
+                     }
+                     return null;
+                   },
+                 ),
+                 SizedBox(height: 20),
+                 TextFormField(
+                   controller: _numarInmatricularController,
+                   maxLength: 30,
+                   decoration: _buildInputDecoration('Număr Înmatriculare', Icons.confirmation_number
+                   ),
+                   validator: (value) {
+                     if (value == null || value.trim().isEmpty) {
+                       return 'Introduceți Număr Înmatriculare';
+                     }
+                     return null;
+                   },
+                 ),
+                 SizedBox(height: 20),
+                 TextFormField(
+                   controller: _marcaController,
+                   maxLength: 30,
+                   decoration: _buildInputDecoration('Marca', Icons.car_repair
+
+                   ),
+                 ),
+                 SizedBox(height: 20),
+                 TextFormField(
+                   controller: _modelController,
+                   maxLength: 30,
+                   decoration: _buildInputDecoration('Model',Icons.style
+                   ),
+                 ),
+                 SizedBox(height: 20),
+                 TextFormField(
+                   controller: _cuiFurnizorController,
+                   maxLength: 30,
+                   decoration: _buildInputDecoration('CUI Furnizor', Icons.business
+                   ),
+                 ),
+                 SizedBox(height: 20),
+                 TextFormField(
+                   controller: _numeFurnizorController,
+                   maxLength: 30,
+                   decoration: _buildInputDecoration('Nume Furnizor', Icons.account_circle
+                   ),
+                 ),
+                 SizedBox(height: 20),
+                 TextFormField(
+                   controller: _idFacturaController,
+                   maxLength: 30,
+                   decoration: _buildInputDecoration('ID Factura', Icons.file_copy),
+                 ),
+                 SizedBox(height: 20),
+                 TextFormField(
+                   controller: _totalPlataController,
+                   maxLength: 30,
+                   decoration: _buildInputDecoration('Total Plata', Icons.attach_money),
+                 ),
+                 SizedBox(height: 20),
+                 TextFormField(
+                   controller: _statusPlataController,
+                   maxLength: 30,
+                   decoration: _buildInputDecoration('Status Plata', Icons.check_circle),
+                 ),
+                 SizedBox(height: 20),
+                 TextFormField(
+                   controller: _fisierPolitaController,
+                   maxLength: 30,
+                   decoration: _buildInputDecoration('Fisier Polita', Icons.file_upload),
+                 ),
+                 SizedBox(height: 20),
+                 TextFormField(
+                   decoration: _buildInputDecoration('Valabilitate De la', Icons.calendar_today),
+                   readOnly: true,
+                   onTap: () async {
+                     DateTime? selectedDate = await showDatePicker(
+                       context: context,
+                       initialDate: _valabilitateDeLa ?? DateTime.now(),
+                       firstDate: DateTime(2000),
+                       lastDate: DateTime(2101),
+                     );
+                     if (selectedDate != null) {
+                       setState(() {
+                         _valabilitateDeLa = selectedDate;
+                       });
+                     }
+                   },
+                   validator: (value) {
+                     if (_valabilitateDeLa == null) {
+                       return 'Introduceți Valabilitate De la';
+                     }
+                     return null;
+                   },
+                 ),
+                 SizedBox(height: 20),
+                 TextFormField(
+                   decoration: _buildInputDecoration('Valabilitate Pana la', Icons.calendar_today),
+                   readOnly: true,
+                   onTap: () async {
+                     DateTime? selectedDate = await showDatePicker(
+                       context: context,
+                       initialDate: _valabilitatePanaLa ?? DateTime.now(),
+                       firstDate: DateTime(2000),
+                       lastDate: DateTime(2101),
+                     );
+                     if (selectedDate != null) {
+                       setState(() {
+                         _valabilitatePanaLa = selectedDate;
+                       });
+                     }
+                   },
+                   validator: (value) {
+                     if (_valabilitatePanaLa == null) {
+                       return 'Introduceți Valabilitate Pana la';
+                     }
+                     return null;
+                   },
+                 ),
+                 SizedBox(height: 30),
+                 isLoading
+                     ? CircularProgressIndicator()
+                     : CustomButtons(
+                   label: 'Adaugă Poliță',
+                   onPressed: _submitForm,
+                 ),
+               ],
+             ),
+           ),
+         ),
+       ),
+     );
+   }
+ }
+
+ // Function to show the dialog
+ void showPolitieForm(BuildContext context) {
+   showDialog(
+     context: context,
+     builder: (context) {
+       return PolitieDialog();
+     },
+   );
+ }
+

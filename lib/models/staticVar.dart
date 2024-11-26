@@ -648,7 +648,7 @@ class staticVar {
 
   static String urlAPI = "https://api.appsheet.com/api/v2/apps/add3deae-595c-41d7-9d86-3fb25daeeee8/tables/";
   static String urlAPITest = "https://api.appsheet.com/api/v2/apps/add3deae-595c-41d7-9d86-3fb25daeeee8/tables/";
-  static Color themeColor =  const Color(0xFF444444) ;
+  static Color themeColor =  const Color(0xff10277C);
 
   static DateTime convertStringToDate(String? dateStr) {
     if(dateStr == null ){

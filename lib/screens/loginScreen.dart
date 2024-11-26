@@ -3,6 +3,7 @@ import 'package:factura_sys/widgets/gestiuneMasiniDrawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class loginScreen extends StatefulWidget {
   static const routeName = '/loginScreen';
@@ -22,111 +23,114 @@ class _loginScreenState extends State<loginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Left side: Icon/Illustration
-              Expanded(
-                child: Container(
-                  // decoration: BoxDecoration(border: Border.all()),
-                  width: staticVar.fullWidth(context) * .3,
-                  height: staticVar.fullhigth(context),
-                  child:   Image.asset('assets/invoice_icon.png' ), // Replace with your asset
+      body: Animate(
+        effects: [FadeEffect(duration: Duration(milliseconds: 1000))],
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Left side: Icon/Illustration
+                Expanded(
+                  child: Container(
+                    // decoration: BoxDecoration(border: Border.all()),
+                    width: staticVar.fullWidth(context) * .3,
+                    height: staticVar.fullhigth(context),
+                    child:   Image.asset('assets/login.png' ,width: 100,), // Replace with your asset
+                  ),
                 ),
-              ),
-              SizedBox(width: 50),
+                SizedBox(width: 50),
 
-              // Right side: Form
-              Expanded(
-                child: SizedBox(
-                  width: 50,
-                  child: Form(
-                    key: _formKey, // Assigning the key to the Form widget
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Logo and title
-                        Row(
-                          children: [
-                            Icon(Icons.description, color: Color(0xFF444444), size: 50),
-                            SizedBox(width: 10),
-                            Text(
-                              'FinoPro',
-                              style: TextStyle(
-                                fontSize: 50,
-                                fontWeight: FontWeight.bold,
+                // Right side: Form
+                Expanded(
+                  child: SizedBox(
+                    width: 50,
+                    child: Form(
+                      key: _formKey, // Assigning the key to the Form widget
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Logo and title
+                          Row(
+                            children: [
+
+                              Text(
+                                'FINOPS',
+                                style: TextStyle(
+                                  fontSize: 50,
+                                  fontWeight: FontWeight.bold,
+                                  color: staticVar.themeColor
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 30),
+
+                          // Email field
+                          TextFormField(
+                            controller: _emailController,
+                            decoration: InputDecoration(
+                              labelText: 'Email',
+                              border: OutlineInputBorder(),
+                              hintText: 'Enter email address',
+                            ),
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'Please enter your email.';
+                              } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                                return 'Please enter a valid email address.';
+                              }
+                              return null; // Return null if validation passes
+                            },
+                          ),
+                          SizedBox(height: 20),
+
+                          // Password field
+                          TextFormField(
+                            controller: _passwordController,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              labelText: 'Password',
+                              border: OutlineInputBorder(),
+                              hintText: 'Enter password',
+                            ),
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'Please enter your password.';
+                              }
+                              return null; // Return null if validation passes
+                            },
+                          ),
+                          SizedBox(height: 20),
+
+                          // Login button
+                          ElevatedButton(
+                            onPressed: isLoading ? null : _login,
+                            child: Center(
+                              child: isLoading
+                                  ? CircularProgressIndicator(color: Colors.white) // Show loading indicator
+                                  : Text(
+                                'Log In',
+                                style: TextStyle(fontSize: 18, color: Colors.white),
                               ),
                             ),
-                          ],
-                        ),
-                        SizedBox(height: 30),
-
-                        // Email field
-                        TextFormField(
-                          controller: _emailController,
-                          decoration: InputDecoration(
-                            labelText: 'Email',
-                            border: OutlineInputBorder(),
-                            hintText: 'Enter email address',
-                          ),
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'Please enter your email.';
-                            } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                              return 'Please enter a valid email address.';
-                            }
-                            return null; // Return null if validation passes
-                          },
-                        ),
-                        SizedBox(height: 20),
-
-                        // Password field
-                        TextFormField(
-                          controller: _passwordController,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            labelText: 'Password',
-                            border: OutlineInputBorder(),
-                            hintText: 'Enter password',
-                          ),
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'Please enter your password.';
-                            }
-                            return null; // Return null if validation passes
-                          },
-                        ),
-                        SizedBox(height: 20),
-
-                        // Login button
-                        ElevatedButton(
-                          onPressed: isLoading ? null : _login,
-                          child: Center(
-                            child: isLoading
-                                ? CircularProgressIndicator(color: Colors.white) // Show loading indicator
-                                : Text(
-                              'Log In',
-                              style: TextStyle(fontSize: 18, color: Colors.white),
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10), // Sharp edges
+                              ),
+                              backgroundColor:  staticVar.themeColor,
+                              minimumSize: Size(double.infinity, 50),
                             ),
                           ),
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.zero, // Sharp edges
-                            ),
-                            backgroundColor: Color(0xFF444444),
-                            minimumSize: Size(double.infinity, 50),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

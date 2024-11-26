@@ -94,4 +94,15 @@ class politeProvider with ChangeNotifier {
   String? formatDate(DateTime? date) {
     return date?.toIso8601String();
   }
+
+
+
+
+  /// This function will generate a unique code for us
+  String Uniqu(int number) {
+    // Add 1 to the number and format it to have 5 digits
+    String formattedNumber = (number + 1).toString().padLeft(5, '0');
+    // Create the unique code using the formatted number
+    return 'POL-$formattedNumber';
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:factura_sys/provider/IntrariProvider.dart';
+import 'package:factura_sys/provider/ModedaProvider.dart';
 import 'package:factura_sys/provider/TranzactiiProvider.dart';
 import 'package:factura_sys/provider/categorieProvider.dart';
 import 'package:factura_sys/provider/firmGestiuneProvider.dart';
@@ -15,6 +16,7 @@ import 'package:factura_sys/provider/relatiiProvider.dart';
 import 'package:factura_sys/provider/statusProvider.dart';
 import 'package:factura_sys/provider/taguriProvider.dart';
 import 'package:factura_sys/provider/taxesProvider.dart';
+import 'package:factura_sys/provider/tipuriProvider.dart';
 import 'package:factura_sys/screens/homeScreen.dart';
 import 'package:factura_sys/screens/loginScreen.dart';
 import 'package:factura_sys/widgets/gestiuneMasiniDrawer.dart';
@@ -39,7 +41,6 @@ Future<void> main() async {
         measurementId: "G-BYCFY4257F"),
   );
   await Firebase.initializeApp();
-
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => EntitatiProvider()),
     ChangeNotifierProvider(create: (context) => ibanProvider()),
@@ -58,6 +59,8 @@ Future<void> main() async {
     ChangeNotifierProvider(create: (context) => TranzactiiProvider()),
     ChangeNotifierProvider(create: (context) => MarcaMasinaProvider()),
     ChangeNotifierProvider(create: (context) => modelMasinaProvider()),
+    ChangeNotifierProvider(create: (context) => TipuriProvider()),
+    ChangeNotifierProvider(create: (context) => ModedaProvider()),
   ], child: MyApp()));
 }
 
@@ -71,7 +74,7 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitDown,
     ]);
     return MaterialApp(
-      // debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
           useMaterial3: true, colorScheme: Theme.of(context).colorScheme),
 

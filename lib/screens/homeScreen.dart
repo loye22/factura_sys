@@ -91,26 +91,77 @@ class _homeScreenState extends State<homeScreen> {
   @override
   Widget build(BuildContext context) {
     /// test
-     openTab("tabTitle", gestiuneMasini());
+    // openTab("tabTitle", polite());
 
     TabbedView tabbedView = TabbedView(
       controller: _controller,
       closeButtonTooltip: "Close tab",
     );
+
     Widget TabsWidgetDisplay = TabbedViewTheme(
       child: tabbedView,
-      data: TabbedViewThemeData.minimalist(),
+      data: TabbedViewThemeData.mobile(accentColor: staticVar.themeColor!),
     );
 
     return AdminScaffold(
         backgroundColor: Colors.white,
-
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: staticVar.themeColor,
+          // Use your custom blue color here
+          title: Row(
+            // mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text(
+                "FINOPS", // Title of the app
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: Colors.white),
+              ),
+              SizedBox(width: staticVar.fullWidth(context) * .15),
+              Container(
+                width: staticVar.fullWidth(context) * .5,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: TextField(
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    prefixIcon: Icon(Icons.search, color: Colors.grey),
+                    hintText: 'Search',
+                    contentPadding: EdgeInsets.symmetric(vertical: 10),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: NotificationIcon(),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 16.0),
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(
+                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTM8LrGjiUDcvYjUMk7jUJJZo0kK4Y4NzKxmQ&s', // Replace with profile image URL
+                ),
+              ),
+            ),
+          ],
+        ),
         sideBar: SideBar(
-          backgroundColor: const Color(0xFFEEEEEE),
+          backgroundColor: Colors.white,
+          //const Color(0xFFEEEEEE), // Light gray
           activeBackgroundColor: Colors.black26,
-          iconColor: const Color(0xFF444444) ,
+          iconColor: staticVar.themeColor,
+          // Light gray for icons
           activeIconColor: Colors.blue,
-          textStyle: TextStyle(color: Color(0xFF444444)),
+          // Keep active icon blue if needed
+          textStyle: TextStyle(color: staticVar.themeColor),
 
 
           scrollController: ScrollController(),
@@ -341,8 +392,6 @@ class _homeScreenState extends State<homeScreen> {
                 break;
             }
           },
-          header: headerWidget(),
-          footer: footer(),
         ),
         body: Stack(
           children: [

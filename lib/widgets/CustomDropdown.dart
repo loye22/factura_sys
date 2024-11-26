@@ -36,6 +36,18 @@ class CustomDropdown extends FormField<String> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          selectedValue == null ? SizedBox.shrink() :   AnimatedContainer(
+            duration: Duration(milliseconds: 200),
+         //   margin: EdgeInsets.only(bottom: 5),
+            child: Text(
+              selectedValue == null ? "" :( hint ?? ""),
+              style: TextStyle(
+                fontSize: selectedValue == null ? 14 : 12,
+                color: selectedValue == null ? Colors.grey : Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
@@ -93,6 +105,7 @@ class CustomDropdown extends FormField<String> {
                     state.didChange(value);
                     if (onChanged != null) {
                       onChanged!(value);
+
                     }
                   },
                   buttonStyleData: ButtonStyleData(

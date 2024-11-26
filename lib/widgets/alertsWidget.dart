@@ -20,7 +20,7 @@ class _AlertsWidgetState extends State<AlertsWidget> {
     // If there's no alert, return an empty SizedBox to take up no space
     if (widget.alertType == AlertType.noAlert) {
       return Positioned(bottom: 0, left: 0, right: 0, child: Container(
-        height: MediaQuery.of(context).size.height * .055,
+        height: MediaQuery.of(context).size.height * 0,
         color: Colors.white,
       ));
     }

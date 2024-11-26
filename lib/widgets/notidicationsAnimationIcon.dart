@@ -1,3 +1,4 @@
+import 'package:factura_sys/models/staticVar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -30,11 +31,11 @@ class _NotificationIconState extends State<NotificationIcon> {
     RenderBox renderBox = context.findRenderObject() as RenderBox;
     var size = renderBox.size;
     var offset = renderBox.localToGlobal(Offset.zero);
-
     return OverlayEntry(
       builder: (context) => Positioned(
-        left: offset.dx,
-        top: offset.dy - size.height * 8, // Offset the menu below the icon
+
+        right: staticVar.fullWidth(context) *.05,
+        top: offset.dy ,   // Offset the menu below the icon
         width: 300, // Adjust menu width
         child: Material(
           color: Colors.transparent,

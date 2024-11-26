@@ -1,5 +1,9 @@
 import 'package:factura_sys/models/gestinueMasini_Model.dart';
+import 'package:factura_sys/provider/ModedaProvider.dart';
 import 'package:factura_sys/provider/gestiuneMasiniProvider.dart';
+import 'package:factura_sys/provider/marcaMasinaProvider.dart';
+import 'package:factura_sys/provider/modelMasinaProvider.dart';
+import 'package:factura_sys/provider/tipuriProvider.dart';
 import 'package:factura_sys/widgets/CustomDropdown.dart';
 import 'package:factura_sys/widgets/buttons.dart';
 import 'package:factura_sys/widgets/gestiuneMasiniDrawer.dart';
@@ -7,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import '../../models/staticVar.dart';
@@ -30,18 +35,19 @@ class _gestiuneMasiniState extends State<gestiuneMasini> {
   @override
   Widget build(BuildContext context) {
     final gestinueProviderVar = Provider.of<gestinueMasiniProvider>(context);
-    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+    // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-    return Scaffold( key: _scaffoldKey, // Ass
+    return Scaffold(
+        // key: _scaffoldKey, // Ass
         endDrawer: gestiuneMasiniDrawer(),
         backgroundColor: Colors.transparent,
         floatingActionButton: FloatingActionButton(
           tooltip: 'Adaugă Mașină',
           backgroundColor: staticVar.themeColor,
           onPressed: () async {
-            _scaffoldKey.currentState?.openEndDrawer();
-          //    Scaffold.of(context).openEndDrawer();
-            // showMasinaFrom(context);
+            //  _scaffoldKey.currentState?.openEndDrawer();
+            //    Scaffold.of(context).openEndDrawer();
+            showMasinaFrom(context);
           },
           child: Icon(
             Icons.add,
@@ -227,70 +233,86 @@ class MasinaForm extends StatefulWidget {
 
 class _MasinaFormState extends State<MasinaForm> {
   final _formKey = GlobalKey<FormState>();
+
   final _serieSasiuController = TextEditingController();
-  final _cuiProprietarController = TextEditingController();
-  final _comodatController = TextEditingController();
   final _numarInmatricularController = TextEditingController();
-  final _marcaMasinaController = TextEditingController();
-  final _modelController = TextEditingController();
-  final _anulController = TextEditingController();
   final _utilizatorController = TextEditingController();
   final _kilometrajController = TextEditingController();
-  final _tipCombustibilController = TextEditingController();
   final _responsabilController = TextEditingController();
   final _valoareAchizitieController = TextEditingController();
-  final _monedaController = TextEditingController();
+  final _anulController = TextEditingController();
+
+  String? cuiSelectedValue;
+  String? comodataSelectedValue;
+  String? MarcaMasinaSelectedValue;
+  String? modelSelectedValue;
+  String? tipuriSelectedValue;
+  String? monedaSelectedValue;
+  DateTime? _selectedDate;
 
   bool isLoading = false;
 
   Future<void> _submitForm() async {
-    if (_formKey.currentState!.validate()) {
-      setState(() {
-        isLoading = true;
-      });
+    try {
+      print('before if');
+      print(_formKey.currentState!.validate());
+      if (_formKey.currentState!.validate()) {
+        setState(() {
+          isLoading = true;
+        });
 
-      final serieSasiu = _serieSasiuController.text.trim();
-      final cuiProprietar = _cuiProprietarController.text.trim();
-      final comodat = _comodatController.text.trim();
-      final numarInmatricular = _numarInmatricularController.text.trim();
-      final marcaMasina = _marcaMasinaController.text.trim();
-      final model = _modelController.text.trim();
-      final anul = _anulController.text.trim();
-      final utilizator = _utilizatorController.text.trim();
-      final kilometraj = _kilometrajController.text.isNotEmpty
-          ? int.tryParse(_kilometrajController.text.trim())
-          : null;
-      final tipCombustibil = _tipCombustibilController.text.trim();
-      final responsabil = _responsabilController.text.trim();
-      final valoareAchizitie = _valoareAchizitieController.text.isNotEmpty
-          ? double.tryParse(_valoareAchizitieController.text.trim())
-          : null;
-      final moneda = _monedaController.text.trim();
+        final serieSasiu = _serieSasiuController.text.trim();
+        final cuiProprietar = cuiSelectedValue;
+        final comodat = comodataSelectedValue;
+        final numarInmatricular = _numarInmatricularController.text.trim();
+        final marcaMasina = MarcaMasinaSelectedValue;
+        final model = modelSelectedValue;
+        final utilizator = _utilizatorController.text.trim();
+        final kilometraj = _kilometrajController.text.isNotEmpty
+            ? int.tryParse(_kilometrajController.text.trim())
+            : null;
+        final tipCombustibil = tipuriSelectedValue;
+        final responsabil = _responsabilController.text.trim();
+        final valoareAchizitie = _valoareAchizitieController.text.isNotEmpty
+            ? double.tryParse(_valoareAchizitieController.text.trim())
+            : null;
+        final moneda = monedaSelectedValue;
 
-      // Prepare the data to be added
-      Map<String, dynamic> data = {
-        'serieSasiu': serieSasiu,
-        'cuiProprietar': cuiProprietar,
-        'comodat': comodat,
-        'numarInmatricular': numarInmatricular,
-        'marcaMasina': marcaMasina,
-        'model': model,
-        'anul': anul,
-        'utilizator': utilizator,
-        'kilometraj': kilometraj ?? 0,
-        'tipCombustibil': tipCombustibil,
-        'responsabil': responsabil,
-        'valoareAchizitie': valoareAchizitie ?? 0.0,
-        'moneda': moneda,
-        'timestamp': DateTime.now(),
-      };
+        // Prepare the data to be added
+        Map<String, dynamic> data = {
+          'Serie Sasiu': serieSasiu,
+          'CUI Proprietar': cuiProprietar,
+          'Comodat': comodat,
+          'Numar Inmatricular': numarInmatricular,
+          'Marca Masina': marcaMasina,
+          'Model Model': model,
+          'Anul': _anulController.text,
+          'Utilizator': utilizator,
+          'Kilometraj': kilometraj ?? 0,
+          'Tip Combustibil': tipCombustibil,
+          'Responsabil': responsabil,
+          'Valoare Achizitie': valoareAchizitie ?? 0.0,
+          'Moneda': moneda,
+          //'timestamp': DateTime.now().toString(),
+        };
 
-      // Access the provider and call the addMasina method
-      // await Provider.of<gestinueMasiniProvider>(context, listen: false)
-      //     .addMasina(context: context, data: data);
+        // Access the provider and call the addMasina method
+        await Provider.of<gestinueMasiniProvider>(context, listen: false)
+            .addMasina(context: context, data: data);
+        Navigator.of(context).pop();
 
-      Navigator.of(context).pop(); // Close the dialog after submission
+        //  Navigator.of(context).pop(); // Close the dialog after submission
+      }
     }
+    catch(e){
+      print("Error $e");
+    }
+    finally{
+      isLoading = false;
+      setState(() {});
+
+    }
+
   }
 
   InputDecoration _buildInputDecoration(String label, IconData icon) {
@@ -305,160 +327,245 @@ class _MasinaFormState extends State<MasinaForm> {
     );
   }
 
-  String? cuiSelectedValue;
-  String? comodataSelectedValue ;
-
+  @override
   @override
   Widget build(BuildContext context) {
     final entitatiProvider = Provider.of<EntitatiProvider>(context);
-
+    final MarcaProvider = Provider.of<MarcaMasinaProvider>(context);
+    final modelProvider = Provider.of<modelMasinaProvider>(context);
+    final tipuriProvider = Provider.of<TipuriProvider>(context);
+    final monedaProvider = Provider.of<ModedaProvider>(context);
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.3,
       child: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(height: 20),
-              TextFormField(
-                controller: _serieSasiuController,
-                decoration:
-                    _buildInputDecoration('Serie Șasiu', Icons.directions_car),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Introduceți Serie Șasiu';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              entitatiProvider.hasData
-                  ? CustomDropdown(
-                      selectedValue: cuiSelectedValue,
-                      items: entitatiProvider.entitatiList
-                          .map((e) => e.cuiEntitate)
-                          .toList()
-                          .toSet()
-                          .toList(),
-                      textEditingController: _cuiProprietarController,
-                      onAddNewItemPressed: () {},
-                      hint: 'CUI Proprietar',
-                      hintIcon: Icons.business,
-                      onChanged: (value) {
-                        print('here is the value ');
-                        print("value ---> " + value.toString());
-                        print("type ---> " + value.runtimeType.toString());
-                        setState(() {
-                          cuiSelectedValue = value;
-                        });
-                      })
-                  : staticVar.loading(),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            child: (monedaProvider.hasData &&
+                    tipuriProvider.hasData &&
+                    modelProvider.hasData &&
+                    MarcaProvider.hasData &&
+                    entitatiProvider.hasData)
+                ? Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(height: 20),
+                        TextFormField(
+                          maxLength: 30,
+                          controller: _serieSasiuController,
+                          decoration: _buildInputDecoration(
+                              'Serie Șasiu', Icons.directions_car),
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Introduceți Serie Șasiu';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 20),
+                        entitatiProvider.hasData
+                            ? CustomDropdown(
+                                textEditingController: TextEditingController(),
+                                selectedValue: cuiSelectedValue,
+                                items: entitatiProvider.entitatiList
+                                    .map((e) => e.cuiEntitate)
+                                    .toList()
+                                    .toSet()
+                                    .toList(),
+                                onAddNewItemPressed: () {},
+                                hint: 'CUI Proprietar',
+                                hintIcon: Icons.business,
+                                onChanged: (value) {
+                                  setState(() {
+                                    cuiSelectedValue = value;
+                                  });
+                                })
+                            : staticVar.loading(),
+                        SizedBox(height: 20),
+                        entitatiProvider.hasData
+                            ? CustomDropdown(
+                                textEditingController: TextEditingController(),
+                                selectedValue: comodataSelectedValue,
+                                items: entitatiProvider.entitatiList
+                                    .map((e) => e.denumire)
+                                    .toList()
+                                    .toSet()
+                                    .toList(),
+                                onAddNewItemPressed: () {},
+                                hint: 'Comodat',
+                                hintIcon: Icons.handshake,
+                                onChanged: (value) {
+                                  setState(() {
+                                    comodataSelectedValue = value;
+                                  });
+                                })
+                            : staticVar.loading(),
+                        SizedBox(height: 20),
+                        TextFormField(
+                          maxLength: 30,
+                          controller: _numarInmatricularController,
+                          decoration: _buildInputDecoration(
+                              'Număr Înmatricular', Icons.directions_car),
+                        ),
+                        SizedBox(height: 20),
+                        MarcaProvider.hasData
+                            ? CustomDropdown(
+                                textEditingController: TextEditingController(),
+                                selectedValue: MarcaMasinaSelectedValue,
+                                items: MarcaProvider.marcaMasinaList
+                                    .map((e) => e.marcaMasina)
+                                    .toList()
+                                    .toSet()
+                                    .toList(),
+                                onAddNewItemPressed: () {},
+                                hint: 'Marca Mașină',
+                                hintIcon: Icons.directions_car_filled,
+                                onChanged: (value) {
+                                  setState(() {
+                                    MarcaMasinaSelectedValue = value;
+                                  });
+                                })
+                            : staticVar.loading(),
+                        SizedBox(height: 20),
+                        modelProvider.hasData
+                            ? CustomDropdown(
+                                textEditingController: TextEditingController(),
+                                selectedValue: modelSelectedValue,
+                                items: modelProvider.modelMasinaList
+                                    .map((e) => e.model)
+                                    .toList()
+                                    .toSet()
+                                    .toList(),
+                                onAddNewItemPressed: () {},
+                                hint: 'Model',
+                                hintIcon: Icons.car_rental,
+                                onChanged: (value) {
+                                  setState(() {
+                                    modelSelectedValue = value;
+                                  });
+                                })
+                            : staticVar.loading(),
+                        SizedBox(height: 20),
+                        TextFormField(
+                          controller: _anulController,
+                          maxLength: 4,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          // Makes the TextFormField read-only
+                          decoration: _buildInputDecoration(
+                              'Anul', Icons.calendar_today),
 
-              SizedBox(height: 20),
-              entitatiProvider.hasData
-                  ? CustomDropdown(
-                      selectedValue: comodataSelectedValue,
-                      items: entitatiProvider.entitatiList
-                          .map((e) => e.denumire)
-                          .toList()
-                          .toSet()
-                          .toList(),
-                      textEditingController: _comodatController,
-                      onAddNewItemPressed: () {},
-                      hint: 'Comodat',
-                      hintIcon:Icons.handshake,
-                      onChanged: (value) {
-                        setState(() {
-                          cuiSelectedValue = value;
-                        });
-                      })
-                  : staticVar.loading(),
-
-              SizedBox(height: 20),
-              TextFormField(
-                controller: _numarInmatricularController,
-                decoration: _buildInputDecoration(
-                    'Număr Înmatricular', Icons.directions_car),
-              ),
-              SizedBox(height: 20),
-              TextFormField(
-                controller: _marcaMasinaController,
-                decoration: _buildInputDecoration(
-                    'Marca Mașină', Icons.directions_car_filled),
-              ),
-              SizedBox(height: 20),
-              TextFormField(
-                controller: _modelController,
-                decoration:
-                    _buildInputDecoration('Model', Icons.model_training),
-              ),
-              SizedBox(height: 20),
-              TextFormField(
-                controller: _anulController,
-                decoration: _buildInputDecoration('Anul', Icons.calendar_today),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Introduceți Anul';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              TextFormField(
-                controller: _utilizatorController,
-                decoration: _buildInputDecoration('Utilizator', Icons.person),
-              ),
-              SizedBox(height: 20),
-              TextFormField(
-                controller: _kilometrajController,
-                decoration: _buildInputDecoration('Kilometraj', Icons.speed),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value != null &&
-                      value.isNotEmpty &&
-                      int.tryParse(value) == null) {
-                    return 'Introduceți o valoare numerică validă';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              TextFormField(
-                controller: _tipCombustibilController,
-                decoration: _buildInputDecoration(
-                    'Tip Combustibil', Icons.local_gas_station),
-              ),
-              SizedBox(height: 20),
-              TextFormField(
-                controller: _responsabilController,
-                decoration: _buildInputDecoration('Responsabil', Icons.person),
-              ),
-              SizedBox(height: 20),
-              TextFormField(
-                controller: _valoareAchizitieController,
-                decoration:
-                    _buildInputDecoration('Valoare Achiziție', Icons.money),
-                keyboardType: TextInputType.number,
-              ),
-              SizedBox(height: 20),
-              TextFormField(
-                controller: _monedaController,
-                decoration: _buildInputDecoration('Moneda', Icons.attach_money),
-              ),
-              SizedBox(height: 30),
-              isLoading
-                  ? CircularProgressIndicator()
-                  : CustomButtons(
-                      label: 'Adaugă Mașină',
-                      onPressed: _submitForm,
+                          // Show date picker on tap
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Introduceți Anul';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 20),
+                        TextFormField(
+                          maxLength: 30,
+                          controller: _utilizatorController,
+                          decoration:
+                              _buildInputDecoration('Utilizator', Icons.person),
+                        ),
+                        SizedBox(height: 20),
+                        TextFormField(
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          maxLength: 4,
+                          controller: _kilometrajController,
+                          decoration:
+                              _buildInputDecoration('Kilometraj', Icons.speed),
+                          keyboardType: TextInputType.number,
+                          validator: (value) {
+                            if (value != null &&
+                                value.isNotEmpty &&
+                                int.tryParse(value) == null) {
+                              return 'Introduceți o valoare numerică validă';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 20),
+                        tipuriProvider.hasData
+                            ? CustomDropdown(
+                                selectedValue: tipuriSelectedValue,
+                                items: tipuriProvider.tipuriList
+                                    .map((e) => e.tip)
+                                    .toList()
+                                    .toSet()
+                                    .toList(),
+                                textEditingController: TextEditingController(),
+                                onAddNewItemPressed: () {},
+                                hint: 'Tip Combustibil',
+                                hintIcon: Icons.local_gas_station,
+                                onChanged: (value) {
+                                  setState(() {
+                                    tipuriSelectedValue = value;
+                                  });
+                                })
+                            : staticVar.loading(),
+                        SizedBox(height: 20),
+                        TextFormField(
+                          maxLength: 30,
+                          controller: _responsabilController,
+                          decoration: _buildInputDecoration(
+                              'Responsabil', Icons.person),
+                        ),
+                        SizedBox(height: 20),
+                        TextFormField(
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          maxLength: 10,
+                          controller: _valoareAchizitieController,
+                          decoration: _buildInputDecoration(
+                              'Valoare Achiziție', Icons.money),
+                          keyboardType: TextInputType.number,
+                        ),
+                        SizedBox(height: 20),
+                        monedaProvider.hasData
+                            ? CustomDropdown(
+                                selectedValue: monedaSelectedValue,
+                                items: monedaProvider.modedaList
+                                    .map((e) => e.modeda)
+                                    .toList()
+                                    .toSet()
+                                    .toList(),
+                                textEditingController: TextEditingController(),
+                                onAddNewItemPressed: () {},
+                                hint: 'Moneda',
+                                hintIcon: Icons.attach_money,
+                                onChanged: (value) {
+                                  setState(() {
+                                    monedaSelectedValue = value;
+                                  });
+                                })
+                            : staticVar.loading(),
+                        SizedBox(height: 30),
+                        isLoading
+                            ? CircularProgressIndicator()
+                            : CustomButtons(
+                                label: 'Adaugă Mașină',
+                                onPressed: _submitForm,
+                              ),
+                      ],
                     ),
-            ],
+                  )
+                : staticVar.loading(),
           ),
         ),
       ),
     );
   }
+
+
 }
 
 // Function to show the dialog
