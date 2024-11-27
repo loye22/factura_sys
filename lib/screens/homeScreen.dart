@@ -91,7 +91,7 @@ class _homeScreenState extends State<homeScreen> {
   @override
   Widget build(BuildContext context) {
     /// test
-    // openTab("tabTitle", polite());
+    openTab("tabTitle", relatii());
 
     TabbedView tabbedView = TabbedView(
       controller: _controller,
@@ -120,19 +120,21 @@ class _homeScreenState extends State<homeScreen> {
                     color: Colors.white),
               ),
               SizedBox(width: staticVar.fullWidth(context) * .15),
-              Container(
-                width: staticVar.fullWidth(context) * .5,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    prefixIcon: Icon(Icons.search, color: Colors.grey),
-                    hintText: 'Search',
-                    contentPadding: EdgeInsets.symmetric(vertical: 10),
+              Flexible(
+                child: Container(
+                  width: staticVar.fullWidth(context) * .5,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      prefixIcon: Icon(Icons.search, color: Colors.grey),
+                      hintText: 'Search',
+                      contentPadding: EdgeInsets.symmetric(vertical: 10),
+                    ),
                   ),
                 ),
               ),

@@ -32,13 +32,14 @@ Future<void> main() async {
   await Firebase.initializeApp(
     // Replace with actual values
     options: FirebaseOptions(
-        apiKey: "AIzaSyD_8yYLK2N30V4LOQqzOeTHNRenwVK7BCs",
-        authDomain: "facturasys-47c5c.firebaseapp.com",
-        projectId: "facturasys-47c5c",
-        storageBucket: "facturasys-47c5c.appspot.com",
-        messagingSenderId: "495287896056",
-        appId: "1:495287896056:web:9f4dcb2f8068bd07db780d",
-        measurementId: "G-BYCFY4257F"),
+        apiKey: "AIzaSyB7XBS6w47g0z2HPEUNpWQOY9Zp9CdfdWo",
+        authDomain: "finpros-ee3a6.firebaseapp.com",
+        projectId: "finpros-ee3a6",
+        storageBucket: "finpros-ee3a6.firebasestorage.app",
+        messagingSenderId: "1089451682481",
+        appId: "1:1089451682481:web:4be5c496a93764271f1090",
+        measurementId: "G-LM69WD3Y0B"
+    ),
   );
   await Firebase.initializeApp();
   runApp(MultiProvider(providers: [

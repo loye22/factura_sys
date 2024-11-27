@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
-
+import 'package:syncfusion_flutter_core/theme.dart';
 import '../../models/staticVar.dart';
 import '../../widgets/CustomDropdown.dart';
 
@@ -33,178 +33,180 @@ class _relatiiState extends State<relatii> {
     return !relatiiProvider.hasData
         ? staticVar.loading()
         : Scaffold(
-      backgroundColor: Colors.transparent,
-      floatingActionButton: FloatingActionButton(
-        tooltip: 'Adaugă relație',
-        backgroundColor:  staticVar.themeColor,
-        onPressed: () async {
-          showRelatiiDialog(context);
-       //   showRelatiiDialog(context);
-        },
-        child: Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-      ),
-      body: SfDataGrid(
-        controller: _dataGridController,
-        allowSorting: true,
-        allowFiltering: true,
-        columnWidthMode: ColumnWidthMode.auto,
-        source: relatiiProvider.hasData
-            ? relatiiProvider.relatiiDataSource
-            :RelatiiDataSource(relatii: []),
-        columns: <GridColumn>[
-          GridColumn(
-            columnName: 'ID Relatie Comerciala',
-            label: Container(
-              alignment: Alignment.center,
-              child: Text('ID Relatie Comerciala'), // Exact label as per your requirement
+            backgroundColor: Colors.transparent,
+            floatingActionButton: FloatingActionButton(
+              tooltip: 'Adaugă relație',
+              backgroundColor: staticVar.themeColor,
+              onPressed: () async {
+                showRelatiiDialog(context);
+                //   showRelatiiDialog(context);
+              },
+              child: Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
             ),
-          ),
-          GridColumn(
-            columnName: 'CUI Firma Gestiune',
-            label: Container(
-              alignment: Alignment.center,
-              child: Text('CUI Firma Gestiune'), // Exact label
+            body: SfDataGrid(
+
+              controller: _dataGridController,
+              allowSorting: true,
+              allowFiltering: true,
+              columnWidthMode: ColumnWidthMode.auto,
+              source: relatiiProvider.hasData
+                  ? relatiiProvider.relatiiDataSource
+                  : RelatiiDataSource(relatii: []),
+              columns: <GridColumn>[
+                GridColumn(
+                  columnName: 'ID Relatie Comerciala',
+                  label: Container(
+                    alignment: Alignment.center,
+                    child: Text(
+                        'ID Relatie Comerciala'), // Exact label as per your requirement
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'CUI Firma Gestiune',
+                  label: Container(
+                    alignment: Alignment.center,
+                    child: Text('CUI Firma Gestiune'), // Exact label
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'Denumire Firma',
+                  label: Container(
+                    alignment: Alignment.center,
+                    child: Text('Denumire Firma'), // Exact label
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'CUI Partener',
+                  label: Container(
+                    alignment: Alignment.center,
+                    child: Text('CUI Partener'), // Exact label
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'Denumire Partener',
+                  label: Container(
+                    alignment: Alignment.center,
+                    child: Text('Denumire Partener'), // Exact label
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'ID Contract',
+                  label: Container(
+                    alignment: Alignment.center,
+                    child: Text('ID Contract'), // Exact label
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'Denumire Contract',
+                  label: Container(
+                    alignment: Alignment.center,
+                    child: Text('Denumire Contract'), // Exact label
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'Descriere Contract',
+                  label: Container(
+                    alignment: Alignment.center,
+                    child: Text('Descriere Contract'), // Exact label
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'Data Incepere Contract',
+                  label: Container(
+                    alignment: Alignment.center,
+                    child: Text('Data Incepere Contract'), // Exact label
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'Data Incetare Contract',
+                  label: Container(
+                    alignment: Alignment.center,
+                    child: Text('Data Incetare Contract'), // Exact label
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'Client / Furnizor',
+                  label: Container(
+                    alignment: Alignment.center,
+                    child: Text('Client / Furnizor'), // Exact label
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'Categorie',
+                  label: Container(
+                    alignment: Alignment.center,
+                    child: Text('Categorie'), // Exact label
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'Subcategorie',
+                  label: Container(
+                    alignment: Alignment.center,
+                    child: Text('Subcategorie'), // Exact label
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'Total Credit',
+                  label: Container(
+                    alignment: Alignment.center,
+                    child: Text('Total Credit'), // Exact label
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'Tranzactii Credit',
+                  label: Container(
+                    alignment: Alignment.center,
+                    child: Text('Tranzactii Credit'), // Exact label
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'Medie Tranzactii Credit',
+                  label: Container(
+                    alignment: Alignment.center,
+                    child: Text('Medie Tranzactii Credit'), // Exact label
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'Total Debit',
+                  label: Container(
+                    alignment: Alignment.center,
+                    child: Text('Total Debit'), // Exact label
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'Tranzactii Debit',
+                  label: Container(
+                    alignment: Alignment.center,
+                    child: Text('Tranzactii Debit'), // Exact label
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'Medie Tranzactii Debit',
+                  label: Container(
+                    alignment: Alignment.center,
+                    child: Text('Medie Tranzactii Debit'), // Exact label
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'Balanta',
+                  label: Container(
+                    alignment: Alignment.center,
+                    child: Text('Balanta'), // Exact label
+                  ),
+                ),
+                GridColumn(
+                  columnName: 'Label Relatie Comerciala',
+                  label: Container(
+                    alignment: Alignment.center,
+                    child: Text('Label Relatie Comerciala'), // Exact label
+                  ),
+                ),
+              ],
             ),
-          ),
-          GridColumn(
-            columnName: 'Denumire Firma',
-            label: Container(
-              alignment: Alignment.center,
-              child: Text('Denumire Firma'), // Exact label
-            ),
-          ),
-          GridColumn(
-            columnName: 'CUI Partener',
-            label: Container(
-              alignment: Alignment.center,
-              child: Text('CUI Partener'), // Exact label
-            ),
-          ),
-          GridColumn(
-            columnName: 'Denumire Partener',
-            label: Container(
-              alignment: Alignment.center,
-              child: Text('Denumire Partener'), // Exact label
-            ),
-          ),
-          GridColumn(
-            columnName: 'ID Contract',
-            label: Container(
-              alignment: Alignment.center,
-              child: Text('ID Contract'), // Exact label
-            ),
-          ),
-          GridColumn(
-            columnName: 'Denumire Contract',
-            label: Container(
-              alignment: Alignment.center,
-              child: Text('Denumire Contract'), // Exact label
-            ),
-          ),
-          GridColumn(
-            columnName: 'Descriere Contract',
-            label: Container(
-              alignment: Alignment.center,
-              child: Text('Descriere Contract'), // Exact label
-            ),
-          ),
-          GridColumn(
-            columnName: 'Data Incepere Contract',
-            label: Container(
-              alignment: Alignment.center,
-              child: Text('Data Incepere Contract'), // Exact label
-            ),
-          ),
-          GridColumn(
-            columnName: 'Data Incetare Contract',
-            label: Container(
-              alignment: Alignment.center,
-              child: Text('Data Incetare Contract'), // Exact label
-            ),
-          ),
-          GridColumn(
-            columnName: 'Client / Furnizor',
-            label: Container(
-              alignment: Alignment.center,
-              child: Text('Client / Furnizor'), // Exact label
-            ),
-          ),
-          GridColumn(
-            columnName: 'Categorie',
-            label: Container(
-              alignment: Alignment.center,
-              child: Text('Categorie'), // Exact label
-            ),
-          ),
-          GridColumn(
-            columnName: 'Subcategorie',
-            label: Container(
-              alignment: Alignment.center,
-              child: Text('Subcategorie'), // Exact label
-            ),
-          ),
-          GridColumn(
-            columnName: 'Total Credit',
-            label: Container(
-              alignment: Alignment.center,
-              child: Text('Total Credit'), // Exact label
-            ),
-          ),
-          GridColumn(
-            columnName: 'Tranzactii Credit',
-            label: Container(
-              alignment: Alignment.center,
-              child: Text('Tranzactii Credit'), // Exact label
-            ),
-          ),
-          GridColumn(
-            columnName: 'Medie Tranzactii Credit',
-            label: Container(
-              alignment: Alignment.center,
-              child: Text('Medie Tranzactii Credit'), // Exact label
-            ),
-          ),
-          GridColumn(
-            columnName: 'Total Debit',
-            label: Container(
-              alignment: Alignment.center,
-              child: Text('Total Debit'), // Exact label
-            ),
-          ),
-          GridColumn(
-            columnName: 'Tranzactii Debit',
-            label: Container(
-              alignment: Alignment.center,
-              child: Text('Tranzactii Debit'), // Exact label
-            ),
-          ),
-          GridColumn(
-            columnName: 'Medie Tranzactii Debit',
-            label: Container(
-              alignment: Alignment.center,
-              child: Text('Medie Tranzactii Debit'), // Exact label
-            ),
-          ),
-          GridColumn(
-            columnName: 'Balanta',
-            label: Container(
-              alignment: Alignment.center,
-              child: Text('Balanta'), // Exact label
-            ),
-          ),
-          GridColumn(
-            columnName: 'Label Relatie Comerciala',
-            label: Container(
-              alignment: Alignment.center,
-              child: Text('Label Relatie Comerciala'), // Exact label
-            ),
-          ),
-        ],
-      ),
-    );
+          );
   }
 
   Future<void> uploadDataToFirebaseFromJSON(String userEmail) async {
@@ -249,7 +251,6 @@ class _relatiiState extends State<relatii> {
   }
 }
 
-
 class RelatiiForm extends StatefulWidget {
   @override
   State<RelatiiForm> createState() => _RelatiiFormState();
@@ -279,8 +280,6 @@ class _RelatiiFormState extends State<RelatiiForm> {
       final clientFurnizor = _clientFurnizorController.text.trim();
       final idContract = _idContractController.text.trim();
 
-
-
       // Prepare the data to be added
       Map<String, dynamic> data = {
         'cuiFirmaGestiune': cuiFirmaGestiune,
@@ -290,7 +289,6 @@ class _RelatiiFormState extends State<RelatiiForm> {
         'categorie': categorie,
         'clientFurnizor': clientFurnizor,
         'idContract': idContract,
-
       };
 
       // Access the provider and call the addRelatie method
@@ -328,7 +326,8 @@ class _RelatiiFormState extends State<RelatiiForm> {
               TextFormField(
                 maxLength: 30,
                 controller: _cuiFirmaController,
-                decoration: _buildInputDecoration('CUI Firma Gestiune', Icons.business),
+                decoration:
+                    _buildInputDecoration('CUI Firma Gestiune', Icons.business),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
                     return 'Introduceți CUI Firma Gestiune';
@@ -340,7 +339,8 @@ class _RelatiiFormState extends State<RelatiiForm> {
               TextFormField(
                 maxLength: 30,
                 controller: _idRelatieController,
-                decoration: _buildInputDecoration('ID Relatie Comerciala', Icons.card_travel),
+                decoration: _buildInputDecoration(
+                    'ID Relatie Comerciala', Icons.card_travel),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
                     return 'Introduceți ID Relatie Comerciala';
@@ -364,7 +364,8 @@ class _RelatiiFormState extends State<RelatiiForm> {
               TextFormField(
                 maxLength: 30,
                 controller: _subcategorieController,
-                decoration: _buildInputDecoration('Subcategorie', Icons.category),
+                decoration:
+                    _buildInputDecoration('Subcategorie', Icons.category),
               ),
               SizedBox(height: 20),
               TextFormField(
@@ -376,21 +377,23 @@ class _RelatiiFormState extends State<RelatiiForm> {
               TextFormField(
                 maxLength: 30,
                 controller: _clientFurnizorController,
-                decoration: _buildInputDecoration('Client / Furnizor', Icons.business_center),
+                decoration: _buildInputDecoration(
+                    'Client / Furnizor', Icons.business_center),
               ),
               SizedBox(height: 20),
               TextFormField(
                 maxLength: 30,
                 controller: _idContractController,
-                decoration: _buildInputDecoration('ID Contract', Icons.document_scanner),
+                decoration: _buildInputDecoration(
+                    'ID Contract', Icons.document_scanner),
               ),
               SizedBox(height: 30),
               isLoading
                   ? CircularProgressIndicator()
                   : CustomButtons(
-                label: 'Adaugă Relație',
-                onPressed: _submitForm,
-              ),
+                      label: 'Adaugă Relație',
+                      onPressed: _submitForm,
+                    ),
             ],
           ),
         ),
@@ -426,4 +429,3 @@ void showRelatiiDialog(BuildContext context) {
     },
   );
 }
-
